@@ -1,11 +1,12 @@
 <?php
 abstract class AbstractStore extends AbstractBase {
     protected $config;
-    public function setConfig($config) {
+    public function __construct($config = '') {
         $this->config = $config;
     }
     public function init() {
-        echo 'AbstractStore init';
+        //echo 'AbstractStore init';
+        return $this;
     }
 }
 ?>

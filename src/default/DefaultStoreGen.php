@@ -10,7 +10,7 @@ class DefaultStoreGen extends AbstractStoreGen {
             && is_string($_CFG['stores'][$name]['classname']) 
             && class_exists($_CFG['stores'][$name]['classname'])) {
             $classname = $_CFG['stores'][$name]['classname'];
-            $store = new $classname();
+            $store = new $classname($_CFG['stores'][$name]);
         } else if($name && class_exists($classname)) {
             $store = new $classname();
         } else {

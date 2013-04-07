@@ -10,7 +10,8 @@ for( $i = 0 ; $i < 10 ; $i++ )
 }
 echo 'End ...<br />';*/
 
-$_SRCPath = '../';
-require_once $_SRCPath.'test/config.php';
-require_once '../src/bootstrap.php';
+global $_SRCPath;
+$_SRCPath = dirname(__FILE__).'/../';
+require_once $_SRCPath.'/test/config.php';
+require_once $_SRCPath.'/src/bootstrap.php';
 ?>

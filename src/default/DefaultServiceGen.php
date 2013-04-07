@@ -10,7 +10,7 @@ class DefaultServiceGen extends AbstractServiceGen {
             && is_string($_CFG['services'][$name]['classname']) 
             && class_exists($_CFG['services'][$name]['classname'])) {
             $classname = $_CFG['services'][$name]['classname'];
-            $service = new $classname();
+            $service = new $classname($_CFG['services'][$name]);
         } else if($name && class_exists($classname)) {
             $service = new $classname();
         } else {

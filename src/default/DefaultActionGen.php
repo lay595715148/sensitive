@@ -11,8 +11,7 @@ class DefaultActionGen extends AbstractActionGen {
             && is_string($_CFG['actions'][$name]['classname']) 
             && class_exists($_CFG['actions'][$name]['classname'])) {
             $classname = $_CFG['actions'][$name]['classname'];
-            $action = new $classname();
-            $action->setConfig($_CFG['actions'][$name]);
+            $action = new $classname($_CFG['actions'][$name]);
         } else if(class_exists($classname)) {
             $action = new $classname();
         } else {

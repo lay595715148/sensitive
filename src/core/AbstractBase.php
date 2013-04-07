@@ -2,12 +2,12 @@
 abstract class AbstractBase {
     public function __call($method, $arguments) {
         if(!method_exists($this,$method)) {
-            echo "<br/>There is no object method:".$method."( ) in class:".get_class($this)."<br/>";
+			throw new MethodNotFoundException('There is no object method:'.$method.'( ) in class:'.get_class($this));
         }
     }
     public static function __callStatic($method, $arguments) {
         if(!method_exists($this,$method)) {
-            echo "<br/>There is no static method:".$method."( ) in class:".get_class($this)."<br/>";
+			throw new StaticMethodNotFoundException('There is no static method:'.$method.'( ) in class:'.get_class($this));
         }
     }
     /**
@@ -19,7 +19,7 @@ abstract class AbstractBase {
      */
     public function __set($name, $value) {
         if(!property_exists($this,$name)) {
-            echo "<br/>There is no property:$name in class:".get_class($this)."<br/>";
+            throw new PropertyNotFoundException('<br/>There is no property:'.$name.' in class:'.get_class($this));
         }
     }
     /**
@@ -30,8 +30,11 @@ abstract class AbstractBase {
      */
     public function __get($name) {
         if(!property_exists($this,$name)) {
-            echo "<br/>There is no property:$name in class:".get_class($this)."<br/>";
+            throw new PropertyNotFoundException('<br/>There is no property:'.$name.' in class:'.get_class($this));
         }
     }
 }
+class PropertyNotFoundException extends Exception {}
+class MethodNotFoundException extends Exception {}
+class StaticMethodNotFoundException extends Exception {}
 ?>
