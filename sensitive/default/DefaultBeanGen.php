@@ -5,7 +5,7 @@ class DefaultBeanGen extends AbstractBeanGen {
     public function genBean($keyword = '') {
         global $_CFG;
         $name = $keyword;
-        $classname = $name.'Bean';//默认对应的类名
+        $classname = ucwords($name).'Bean';//默认对应的类名
 
         //在$_CFG['beans']中有以执行文件名配置属性，及classname属性对应的类存在
         if($name && array_key_exists($name,$_CFG['beans']) 
