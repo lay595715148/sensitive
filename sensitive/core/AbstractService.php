@@ -12,7 +12,13 @@ abstract class AbstractService extends AbstractBase {
         $config     = &$this->config;
         $store      = &$this->store;
         $storeGen   = new DefaultStoreGen();
-        $store      = $storeGen->genStore()->init();
+
+        if($config['store'] && is_string($config['store'])) {
+            //加载配置中的store
+            $store = $storeGen->genStore($config['store'])->init();
+        } else {
+            $store = $storeGen->genStore()->init();
+        }
 		return $this;
     }
 }

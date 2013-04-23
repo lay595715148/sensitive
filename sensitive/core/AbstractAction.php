@@ -5,16 +5,19 @@ abstract class AbstractAction extends AbstractBase {
     protected $config = array();
     protected $services = array();
     protected $beans = array();
+    protected $template;
     public function __construct($config = '') {
         $this->config = $config;
 	}
-    public function init() {
+    public function init() {//must return $this
         //echo 'AbstractAction init';
-        $config     = &$this->config;
-        $services   = &$this->services;
-        $beans      = &$this->beans;
-        $serviceGen = new DefaultServiceGen();
-        $beanGen    = new DefaultBeanGen();
+        $config      = &$this->config;
+        $services    = &$this->services;
+        $beans       = &$this->beans;
+        $template    = &$this->template;
+        $serviceGen  = new DefaultServiceGen();
+        $beanGen     = new DefaultBeanGen();
+        $templateGen = new DefaultTemplateGen();
 
         if($config['services'] && is_array($config['services'])) {
             //加载配置中的所有service
@@ -36,25 +39,32 @@ abstract class AbstractAction extends AbstractBase {
             $bean = $beanGen->genBean();
             $beans[] = $bean;
         }
+        $template = $templateGen->genTemplate()->init();
+
         return $this;
     }
     public function launch() {
         //echo 'AbstractAction launch';
     }
-    public function dispatch() {
+    public function dispatch() {//must return $this
         //echo 'AbstractAction dispatch';
         global $_CFG;
         $key        = $_CFG['action']['dispatch-key'];
         $style      = $_CFG['action']['dispatch-style'];
         $method     = $_CFG['action']['dispatch-method'];
-        $variable   = $_REQUEST;
+        $scope      = $_CFG['action']['dispatch-scope'];
+        $variable   = Scope::parseScope((is_numeric($scope) && $scope >= 0 && $scope <= 5)?$scope:0);
 
-        $dispatch   = (array_key_exists($key,$variable))?$_REQUEST[$key]:false;
+        $dispatcher = (array_key_exists($key,$variable))?$_REQUEST[$key]:false;
         if($dispatch) {
-            $method = str_replace('*',$dispatch,$style);
+            $method = str_replace('*',$dispatcher,$style);
+        } else {
+            $this->$method();
         }
-        $this->$method();
         
+        return $this;
+    }
+    public function tail() {//must return $this
         return $this;
     }
 }

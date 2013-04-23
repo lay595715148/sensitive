@@ -34,7 +34,7 @@ class Sensitive extends AbstractBase {
 			echo "<pre>";print_r($matchs);echo "</pre>";
 		} else {*/
 		$actionGen = new DefaultActionGen();
-		$action    = $actionGen->genAction()->init()->dispatch();
+		$action    = $actionGen->genAction()->init()->dispatch()->tail();
 		//}
     }
 }
