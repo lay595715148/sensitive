@@ -30,7 +30,7 @@ abstract class AbstractAction extends AbstractBase {
             $services[] = $service;
         }
         if($config['beans'] && is_array($config['beans'])) {
-            //加载配置中的所有service
+            //加载配置中的所有bean
             foreach($config['beans'] as $k=>$v) {
                 $bean = $beanGen->genBean($v);
                 $beans[$v] = $bean;

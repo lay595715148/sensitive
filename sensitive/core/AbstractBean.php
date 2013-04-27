@@ -10,12 +10,12 @@ if(!defined('INIT_SENSITIVE')) { exit; }
 abstract class AbstractBean extends AbstractBase {
     /**
      * class properties.
-     * please don't modify them in all methods except for '__construct','__set','__get'
+     * please don't modify in all methods except for '__construct','__set','__get' and so on.
      */
     protected $properties = array();
     /**
      * alias of class properties.
-     * please don't modify them in all methods except for '__construct','__set','__get'
+     * please don't modify in all methods except for '__construct','__set','__get' and so on.
      */
     protected $aliases = array();
     public function __construct($properties = '') {
@@ -24,13 +24,13 @@ abstract class AbstractBean extends AbstractBase {
         }
     }
     /**
-     * isset method
+     * isset property
      */
     public function __isset($name) {
         return isset($this->properties[$name]);
     }
     /**
-     * unset method
+     * unset property
      */
     public function __unset($name) {
         unset($this->properties[$name]);
@@ -69,15 +69,15 @@ abstract class AbstractBean extends AbstractBase {
      * @return mixed|void
      */
     public function __get($name) {
-		$aliases = &$this->aliases;
-		$properties = &$this->properties;
+        $aliases = &$this->aliases;
+        $properties = &$this->properties;
         if(empty($aliases)) {
             foreach(array_keys($properties) as $key) {
                 $aliases[strtolower($key)] = $key;
             }
         }
 		
-		$propertyAliasName = strtolower($name);
+        $propertyAliasName = strtolower($name);
         if(array_key_exists($name, $properties)) {
 			return $properties[$name];
         } else if (array_key_exists($propertyAliasName, $aliases)) {

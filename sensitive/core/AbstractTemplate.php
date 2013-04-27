@@ -4,6 +4,9 @@ if(!defined('INIT_SENSITIVE')) { exit; }
 abstract class AbstractTemplate extends AbstractBase {
     protected $config = array();
     protected $vars = array();
+    protected $headers = array();
+    protected $jses = array();
+    protected $csses = array();
     protected $file;
     public function __construct($config = '') {
         $this->config = $config;
@@ -11,22 +14,46 @@ abstract class AbstractTemplate extends AbstractBase {
     public function init() {//must return $this
         return $this;
     }
-    public function push($key, $value) {
-        $vars = &$this->vars;
-        $vars[$key] = $value;
+    //push header for output
+    public function header($header) {
+        $headers   = &$this->headers;
+        $headers[] = $header;
     }
-    public function file($filename) {
-        $this->file = $filename;
+    //push variables with a name
+    public function push($name, $value) {
+        $vars        = &$this->vars;
+        $vars[$name] = $value;
+    }
+    //set include template file path
+    public function file($filepath) {
+        $this->file = $filepath;
+    }
+    //set include js path
+    public function js($js) {
+        $jses   = &$this->jses;
+        $jses[] = $js;
+    }
+    //set include css path
+    public function css($css) {
+        $csses   = &$this->csses;
+        $csses[] = $css;
     }
     public function json() {
         $templateVars = &$this->vars;
         echo json_encode($templateVars);
     }
     public function out() {
+        global $_SRCPath;
         $templateVars = &$this->vars;
         $templateFile = &$this->file;
-        extract($vars);
-        include($file);
+        $jses         = &$this->jses;
+        $csses        = &$this->csses;
+        $headers      = &$this->headers;
+        foreach($headers as $header) {
+            header($header);
+        }
+        extract($templateVars);
+        include($templateFile);
     }
 }
 ?>

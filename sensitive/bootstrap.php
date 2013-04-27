@@ -1,6 +1,6 @@
 <?php
 /**
- * 统一入口
+ * 统一入口文件
  * @author liaiyong
  */
 define('INIT_SENSITIVE',true);
