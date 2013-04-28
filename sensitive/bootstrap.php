@@ -3,7 +3,7 @@
  * 统一入口文件
  * @author liaiyong
  */
-define('INIT_SENSITIVE',true);
+if(!defined('INIT_SENSITIVE')) { exit; }
 
 //Turn on output buffering
 ob_start();

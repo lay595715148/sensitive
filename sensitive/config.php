@@ -6,11 +6,13 @@ global $_CFG;
 $_CFG['session-start']                      = false;
 $_CFG['routes-start']                       = false;
 
-$_CFG['action']['dispatch-key']             = '';
-$_CFG['action']['dispatch-scope']           = 0;
+//配置action
+$_CFG['action']['dispatch-key']             = '';//false时，使用请求文件名来路由action中的方法
+$_CFG['action']['dispatch-scope']           = 0;//0指$_REQUEST,详细见Scope类
 $_CFG['action']['dispatch-style']           = '*';/* 会将*替换为dispatch-scope中dispatch-key值作为键的值 */
 $_CFG['action']['dispatch-method']          = 'launch';//默认执行方法名
 
+//配置类文件映射
 $_CFG['classes']['Sensitive']               = '/sensitive/Sensitive.php';
 $_CFG['classes']['AbstractGen']             = '/sensitive/gen/AbstractGen.php';
 $_CFG['classes']['AbstractActionGen']       = '/sensitive/gen/AbstractActionGen.php';
@@ -46,12 +48,17 @@ $_CFG['classes']['Transfer']                = '/sensitive/util/Transfer.php';
 $_CFG['classes']['Scope']                   = '/sensitive/util/Scope.php';
 $_CFG['classes']['Paging']                  = '/sensitive/util/Paging.php';
 $_CFG['classes']['TableBean']               = '/sensitive/util/TableBean.php';
+$_CFG['classes']['Parser']                  = '/sensitive/util/Parser.php';
 
 $_CFG['classes']['Security']                = '/sensitive/security/Security.php';
 
 $_CFG['classes']['JsAction']                = '/sensitive/action/JsAction.php';
 $_CFG['classes']['CssAction']               = '/sensitive/action/CssAction.php';
 
+//配置表结构映射
+$_CFG['mapping']['tables']['DefaultTableBean'] = 'default';
+$_CFG['mapping']['DefaultTableBean'] = array('foo'=>'foo_field','boo'=>'boo_field');
+//配置业务结构映射
 $_CFG['actions']['default']['classname'] = 'DefaultAction';
 $_CFG['actions']['default']['services'] = array('default');
 $_CFG['actions']['default']['beans'] = array('default');
@@ -66,8 +73,4 @@ $_CFG['stores']['default']['database'] = 'sso';
 $_CFG['stores']['default']['encoding'] = 'UTF8';
 $_CFG['stores']['default']['showsql'] = true;
 $_CFG['actions']['index'] = &$_CFG['actions']['default'];
-
-$_CFG['mapping']['tables']['DefaultTableBean'] = 'default';
-
-$_CFG['mapping']['DefaultTableBean'] = array('defaultField'=>'default_field','defaultField2'=>'default_field_2');
 ?>

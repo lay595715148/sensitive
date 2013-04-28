@@ -40,8 +40,21 @@ abstract class AbstractTemplate extends AbstractBase {
     }
     //output json
     public function json() {
+        $headers      = &$this->headers;
         $templateVars = &$this->vars;
+        foreach($headers as $header) {
+            header($header);
+        }
         echo json_encode($templateVars);
+    }
+    //output xml
+    public function xml() {
+        $headers      = &$this->headers;
+        $templateVars = &$this->vars;
+        foreach($headers as $header) {
+            header($header);
+        }
+        echo Parser::array2XML($templateVars);
     }
     //output template
     public function out() {

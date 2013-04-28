@@ -1,7 +1,7 @@
 
 PHP不区分大小写,变量书写时难免会出现混乱,为了书写规范,本库书写规范如下:
 
-1,   普通变量名: $_varName(很少用到), 全局变量名: global $_VarName, 全局常量名: _VAR_NAME.
+1,   普通变量名: $_varName(很少用到), 全局变量名: global $_VarName, 全局常量名: VAR_NAME.
      普通函数名：function_name, 普通函数内局部变量名: $var_name.
      类静态变量名: $VarName, 类属性变量名: $varName, 类常量名: VAR_NAME.
      类方法(函数)内局部变量名: $varname,$varName.

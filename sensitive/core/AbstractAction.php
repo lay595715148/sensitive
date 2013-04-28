@@ -77,7 +77,13 @@ abstract class AbstractAction extends AbstractBase {
         $extension = $ext['extension'];
         switch($extension) {
             case 'json':
+                $this->template->header('Content-Type: application/json');
+                $this->template->header('Cache-Control: no-store');
                 $this->template->json();
+                break;
+            case 'xml':
+                $this->template->header('Content-Type: text/xml');
+                $this->template->xml();
                 break;
             default:
                 $this->template->out();
