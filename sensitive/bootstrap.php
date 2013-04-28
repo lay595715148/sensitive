@@ -30,15 +30,14 @@ function __autoload($name) {
         throw new AutoloadException('No file for class:'.$name.'!');
     }
     if(!class_exists($name) && !interface_exists($name)) {
-     
         throw new AutoloadException('No class:'.$name.'!');
     }
 }
 
 //启动
 try {
-	Sensitive::start();
+    Sensitive::start();
 } catch (Exception $e) {
-	echo '<pre>';print_r($e->getMessage()."\n");print_r($e->getTraceAsString());echo '</pre>';
+    echo '<pre>';print_r($e->getMessage()."\n");print_r($e->getTraceAsString());echo '</pre>';
 }
 ?>

@@ -21,21 +21,8 @@ class Sensitive extends AbstractBase {
     }
     public function run() {
         global $_CFG;
-        /*if($_CFG['routes-start'] && array_key_exists('routes',$_CFG) && $_CFG['routes']) {
-			//hasn't been implemented
-			$router = new Router();
-			foreach($_CFG['routes'] as $index=>$route) {
-				// defining routes 
-				$router->map($route['pattern'], '', $route['args']);
-			}
-
-			// match current request URL & http method
-			$matchs = $router->matchCurrentRequest();
-			echo "<pre>";print_r($matchs);echo "</pre>";
-		} else {*/
-		$actionGen = new DefaultActionGen();
-		$action    = $actionGen->genAction()->init()->dispatch()->tail();
-		//}
+        $actionGen = new DefaultActionGen();
+        $action    = $actionGen->genAction()->init()->dispatch()->tail();
     }
 }
 

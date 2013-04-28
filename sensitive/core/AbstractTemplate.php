@@ -10,7 +10,7 @@ abstract class AbstractTemplate extends AbstractBase {
     protected $file;
     public function __construct($config = '') {
         $this->config = $config;
-	}
+    }
     public function init() {//must return $this
         return $this;
     }

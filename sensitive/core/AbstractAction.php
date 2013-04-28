@@ -8,7 +8,7 @@ abstract class AbstractAction extends AbstractBase {
     protected $template;
     public function __construct($config = '') {
         $this->config = $config;
-	}
+    }
     public function init() {//must return $this
         //echo 'AbstractAction init';
         $config      = &$this->config;

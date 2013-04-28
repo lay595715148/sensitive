@@ -2,11 +2,11 @@
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 class JsAction extends AbstractAction {
-	public function launch() {
+    public function launch() {
         global $_SRCPath;
         $ext = pathinfo($_SERVER['PHP_SELF']);
         $this->template->header('Content-Type:application/javascript');
         $this->template->file($_SRCPath.'/test/statics/js/'.$ext['filename'].'.js');
-	}
+    }
 }
 ?>
