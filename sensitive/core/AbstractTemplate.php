@@ -38,10 +38,12 @@ abstract class AbstractTemplate extends AbstractBase {
         $csses   = &$this->csses;
         $csses[] = $css;
     }
+    //output json
     public function json() {
         $templateVars = &$this->vars;
         echo json_encode($templateVars);
     }
+    //output template
     public function out() {
         global $_SRCPath;
         $templateVars = &$this->vars;
@@ -49,11 +51,14 @@ abstract class AbstractTemplate extends AbstractBase {
         $jses         = &$this->jses;
         $csses        = &$this->csses;
         $headers      = &$this->headers;
+
+        extract($templateVars);
         foreach($headers as $header) {
             header($header);
         }
-        extract($templateVars);
-        include($templateFile);
+        if(file_exists($templateFile)) {
+            include($templateFile);
+        }
     }
 }
 ?>

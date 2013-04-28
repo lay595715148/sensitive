@@ -4,9 +4,9 @@ if(!defined('INIT_SENSITIVE')) { exit; }
 class JsAction extends AbstractAction {
 	public function launch() {
         global $_SRCPath;
+        $ext = pathinfo($_SERVER['PHP_SELF']);
         $this->template->header('Content-Type:application/javascript');
-        $this->template->file($_SRCPath.'/test/statics/js/'.$_REQUEST['js'].'.js');
-        $this->template->out();
+        $this->template->file($_SRCPath.'/test/statics/js/'.$ext['filename'].'.js');
 	}
 }
 ?>

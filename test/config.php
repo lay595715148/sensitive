@@ -4,8 +4,9 @@ global $_CFG;
 $_CFG['actions']['t']['classname'] = 'TestAction';
 $_CFG['actions']['t']['services'] = array('test');
 $_CFG['actions']['t']['beans'] = array('test');
-$_CFG['actions']['js']['classname'] = array('JsAction');
-$_CFG['actions']['css']['classname'] = array('CssAction');
+
+$_CFG['actions']['tt'] = &$_CFG['actions']['t'];
+$_CFG['actions']['ttt'] = &$_CFG['actions']['t'];
 
 $_CFG['beans']['test']['classname'] = 'TestBean';
 
@@ -20,13 +21,7 @@ $_CFG['stores']['mysql']['database'] = 'sso';
 $_CFG['stores']['mysql']['encoding'] = 'UTF8';
 $_CFG['stores']['mysql']['showsql'] = true;
 
-$_CFG['mapping']['tables']['DefaultTableBean'] = 'default';
-
-$_CFG['mapping']['DefaultTableBean'] = array('defaultField'=>'default_field','defaultField2'=>'default_field_2');
-
 $_CFG['classes']['TestAction'] = '/test/classes/actions/TestAction.php';
 $_CFG['classes']['TestBean'] = '/test/classes/beans/TestBean.php';
 $_CFG['classes']['TestService'] = '/test/classes/services/TestService.php';
-$_CFG['classes']['JsAction'] = '/test/classes/actions/JsAction.php';
-$_CFG['classes']['CssAction'] = '/test/classes/actions/CssAction.php';
 ?>

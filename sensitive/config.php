@@ -6,7 +6,7 @@ global $_CFG;
 $_CFG['session-start']                      = false;
 $_CFG['routes-start']                       = false;
 
-$_CFG['action']['dispatch-key']             = 'key';
+$_CFG['action']['dispatch-key']             = '';
 $_CFG['action']['dispatch-scope']           = 0;
 $_CFG['action']['dispatch-style']           = '*';/* 会将*替换为dispatch-scope中dispatch-key值作为键的值 */
 $_CFG['action']['dispatch-method']          = 'launch';//默认执行方法名
@@ -49,4 +49,25 @@ $_CFG['classes']['TableBean']               = '/sensitive/util/TableBean.php';
 
 $_CFG['classes']['Security']                = '/sensitive/security/Security.php';
 
+$_CFG['classes']['JsAction']                = '/sensitive/action/JsAction.php';
+$_CFG['classes']['CssAction']               = '/sensitive/action/CssAction.php';
+
+$_CFG['actions']['default']['classname'] = 'DefaultAction';
+$_CFG['actions']['default']['services'] = array('default');
+$_CFG['actions']['default']['beans'] = array('default');
+$_CFG['beans']['default']['classname'] = 'DefaultBean';
+$_CFG['services']['default']['classname'] = 'DefaultService';
+$_CFG['services']['default']['store'] = 'default';
+$_CFG['stores']['default']['classname'] = 'Mysql';
+$_CFG['stores']['default']['host'] = '127.0.0.1';
+$_CFG['stores']['default']['username'] = 'root';
+$_CFG['stores']['default']['password'] = 'dcuxpasswd';
+$_CFG['stores']['default']['database'] = 'sso';
+$_CFG['stores']['default']['encoding'] = 'UTF8';
+$_CFG['stores']['default']['showsql'] = true;
+$_CFG['actions']['index'] = &$_CFG['actions']['default'];
+
+$_CFG['mapping']['tables']['DefaultTableBean'] = 'default';
+
+$_CFG['mapping']['DefaultTableBean'] = array('defaultField'=>'default_field','defaultField2'=>'default_field_2');
 ?>

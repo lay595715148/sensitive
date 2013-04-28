@@ -44,27 +44,44 @@ abstract class AbstractAction extends AbstractBase {
         return $this;
     }
     public function launch() {
-        //echo 'AbstractAction launch';
     }
     public function dispatch() {//must return $this
-        //echo 'AbstractAction dispatch';
         global $_CFG;
-        $key        = $_CFG['action']['dispatch-key'];
-        $style      = $_CFG['action']['dispatch-style'];
-        $method     = $_CFG['action']['dispatch-method'];
-        $scope      = $_CFG['action']['dispatch-scope'];
-        $variable   = Scope::parseScope((is_numeric($scope) && $scope >= 0 && $scope <= 5)?$scope:0);
 
-        $dispatcher = (array_key_exists($key,$variable))?$_REQUEST[$key]:false;
-        if($dispatch) {
-            $method = str_replace('*',$dispatcher,$style);
+        $dispatchkey = $_CFG['action']['dispatch-key'];
+        $style       = $_CFG['action']['dispatch-style'];
+        $method      = $_CFG['action']['dispatch-method'];
+        $scope       = $_CFG['action']['dispatch-scope'];
+
+        if($dispatchkey) {
+            $variable   = Scope::parseScope((is_numeric($scope) && $scope >= 0 && $scope <= 5)?$scope:0);
+            $dispatcher = (array_key_exists($dispatchkey,$variable))?$_REQUEST[$dispatchkey]:false;
         } else {
+            $ext        = pathinfo($_SERVER['PHP_SELF']);
+            $dispatcher = $ext['filename'];
+        }
+        if($dispatcher) {
+            $method = str_replace('*',$dispatcher,$style);
+        }
+
+        if(method_exists($this,$method)) {
             $this->$method();
+        } else {
+            $this->launch();
         }
         
         return $this;
     }
     public function tail() {//must return $this
+        $ext = pathinfo($_SERVER['PHP_SELF']);
+        $extension = $ext['extension'];
+        switch($extension) {
+            case 'json':
+                $this->template->json();
+                break;
+            default:
+                $this->template->out();
+        }
         return $this;
     }
 }
