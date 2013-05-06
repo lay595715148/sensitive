@@ -10,22 +10,24 @@ class DefaultActionGen extends AbstractActionGen {
         $extension = $ext['extension'];
         if($dirname != '' && ($dirname === 'js' || $dirname === 'css')) {
             $classname = ucwords($dirname).'Action';//对应的类名
+            $action = new $classname();
         } else if($extension === 'js' || $extension === 'css') {
             $classname = ucwords($extension).'Action';//对应的类名
-        } else {
-            $classname = ucwords($filename).'Action';//默认对应的类名
-        }
-
-        //在$_CFG['actions']中有以执行文件名配置属性，及classname属性对应的类存在
-        if(array_key_exists($filename,$_CFG['actions']) 
-            && is_string($_CFG['actions'][$filename]['classname']) 
-            && class_exists($_CFG['actions'][$filename]['classname'])) {
-            $classname = $_CFG['actions'][$filename]['classname'];
-            $action = new $classname($_CFG['actions'][$filename]);
-        } else if(array_key_exists($classname,$_CFG['classes'])) {
             $action = new $classname();
         } else {
-            $action = new DefaultAction($_CFG['actions']['default']);
+            $classname = ucwords($filename).'Action';//默认对应的类名
+
+            //在$_CFG['actions']中有以执行文件名配置属性，及classname属性对应的类存在
+            if(array_key_exists($filename,$_CFG['actions']) 
+                && is_string($_CFG['actions'][$filename]['classname']) 
+                && class_exists($_CFG['actions'][$filename]['classname'])) {
+                $classname = $_CFG['actions'][$filename]['classname'];
+                $action = new $classname($_CFG['actions'][$filename]);
+            } else if(array_key_exists($classname,$_CFG['classes'])) {
+                $action = new $classname();
+            } else {
+                $action = new DefaultAction($_CFG['actions']['default']);
+            }
         }
 
         return $action;

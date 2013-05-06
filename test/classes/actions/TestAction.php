@@ -20,7 +20,7 @@ class TestAction extends AbstractAction {
         $bean = $dtb->rowsToArray(array(array('foo_field'=>1,'boo_field'=>'ti'), array('foo_field'=>2,'boo_field'=>'it')));
         $this->template->push('bean',$bean);
         $this->template->js('jquery.js?_r='.rand());
-        $this->template->css('style.css?_r='.rand());
+        $this->template->css('page.css?_r='.rand());
         $this->template->push('title','测试> template');
         $this->template->push('testname',array('name'=>'value'));
         $this->template->file($_SRCPath.'/test/templates/test.php');
@@ -30,7 +30,7 @@ class TestAction extends AbstractAction {
         $array = Parser::xml2Array(File::read($_SRCPath.'/test/statics/ExportMessages.xml'));
         $this->template->header('Content-Type:text/html');
         $this->template->js('js.js?_r='.rand());
-        $this->template->css('style.css?_r='.rand());
+        $this->template->css('page.css?_r='.rand());
         $this->template->push('title','T');
         $this->template->push('array',$array);
         $this->template->push('testname',array('name'=>'value'));
@@ -39,7 +39,7 @@ class TestAction extends AbstractAction {
     public function tt() {
         global $_SRCPath;
         $this->template->js('jquery.js?_r='.rand());
-        $this->template->css('style.css?_r='.rand());
+        $this->template->css('page.css?_r='.rand());
         $this->template->push('title','TT');
         $this->template->push('testname',array('name'=>'value'));
         $this->template->file($_SRCPath.'/test/templates/test.php');

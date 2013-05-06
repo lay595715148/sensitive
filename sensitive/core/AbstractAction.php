@@ -64,7 +64,7 @@ abstract class AbstractAction extends AbstractBase {
             $method = str_replace('*',$dispatcher,$style);
         }
 
-        if(method_exists($this,$method)) {
+        if(method_exists($this,$method) && $method != 'init' && $method != 'tail' && $method != 'dispatch' && substr($method,0,2) != '__') {
             $this->$method();
         } else {
             $this->launch();

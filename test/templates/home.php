@@ -4,14 +4,8 @@ include $_SRCPath.'/test/templates/header.php';
 ?>
 <div class="container">
 
-    <h1>Page</h1>
-    <p><strong>This is a Page.</strong></p>
-
-    <pre>
-<?php if($testname) { print_r($testname); }?>
-<?php if($bean) { print_r($bean); }?>
-<?php if($array) { print_r($array); }?>
-    </pre>
+    <h1>Home</h1>
+    <p><strong>This is a Home Page.</strong></p>
 
     <div id="suggestions">
         <a href="https://sensitive.laysoft.cn/contact">Contact Support</a> —

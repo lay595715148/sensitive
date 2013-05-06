@@ -8,6 +8,12 @@ $_CFG['actions']['t']['beans'] = array('test');
 $_CFG['actions']['tt'] = &$_CFG['actions']['t'];
 $_CFG['actions']['ttt'] = &$_CFG['actions']['t'];
 
+$_CFG['actions']['index']['classname'] = 'HomeAction';
+$_CFG['actions']['index']['services'] = array('test');
+$_CFG['actions']['index']['beans'] = array('test');
+$_CFG['actions']['home'] = &$_CFG['actions']['index'];
+$_CFG['actions']['default'] = &$_CFG['actions']['index'];
+
 $_CFG['beans']['test']['classname'] = 'TestBean';
 
 $_CFG['services']['test']['classname'] = 'TestService';
@@ -24,4 +30,6 @@ $_CFG['stores']['mysql']['showsql'] = true;
 $_CFG['classes']['TestAction'] = '/test/classes/actions/TestAction.php';
 $_CFG['classes']['TestBean'] = '/test/classes/beans/TestBean.php';
 $_CFG['classes']['TestService'] = '/test/classes/services/TestService.php';
+
+$_CFG['classes']['HomeAction'] = '/test/classes/actions/HomeAction.php';
 ?>
