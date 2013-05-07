@@ -14,9 +14,9 @@ include $_SRCPath.'/test/templates/header.php';
     </pre>
 
     <div id="suggestions">
-        <a href="https://sensitive.laysoft.cn/contact">Contact Support</a> —
-        <a href="https://sensitive.laysoft.cn/project">Sensitive Project</a> —
-        <a href="https://sensitive.laysoft.cn/status">@sensitivestatus</a>
+        <a href="http://sensitive.laysoft.cn/contact">Contact Support</a> —
+        <a href="http://sensitive.laysoft.cn/project">Sensitive Project</a> —
+        <a href="http://sensitive.laysoft.cn/status">@sensitivestatus</a>
     </div>
 
     <a href="/" class="logo logo-img-1x">

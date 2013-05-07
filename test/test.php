@@ -10,8 +10,8 @@ for( $i = 0 ; $i < 10 ; $i++ )
 }
 echo 'End ...<br />';*/
 
+define('INIT_SENSITIVE',true);
 global $_SRCPath;
 $_SRCPath = dirname(__FILE__).'/../';
-require_once $_SRCPath.'/test/config.php';
-require_once $_SRCPath.'/src/bootstrap.php';
+require_once $_SRCPath.'/sensitive/bootstrap.php';
 ?>
