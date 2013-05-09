@@ -3,8 +3,15 @@ if(!defined('INIT_SENSITIVE')) { exit; }
 
 global $_CFG;
 
+$_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
 $_CFG['routes-start']                       = false;
+
+//配置主题，相对于$_SRCPath
+$_CFG['theme']['theme-dir']                 = '';//相对$_SRCPath
+$_CFG['theme']['theme-use']                 = 'default';
+$_CFG['themes']['default']['dir']           = '/test';//相对$_CFG['theme']['theme-dir']
+$_CFG['themes']['default']['tpl']           = '/test/templates';//相对$_CFG['theme']['theme-dir']
 
 //配置action
 $_CFG['action']['dispatch-key']             = '';//false时，使用请求文件名来路由action中的方法
@@ -12,7 +19,7 @@ $_CFG['action']['dispatch-scope']           = 0;//0指$_REQUEST,详细见Scope�
 $_CFG['action']['dispatch-style']           = '*';/* 会将*替换为dispatch-scope中dispatch-key值作为键的值 */
 $_CFG['action']['dispatch-method']          = 'launch';//默认执行方法名
 
-//配置类文件映射
+//配置类文件映射，相对于$_SRCPath
 $_CFG['classes']['Sensitive']               = '/sensitive/Sensitive.php';
 $_CFG['classes']['AbstractGen']             = '/sensitive/gen/AbstractGen.php';
 $_CFG['classes']['AbstractActionGen']       = '/sensitive/gen/AbstractActionGen.php';

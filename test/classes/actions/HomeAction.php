@@ -7,7 +7,7 @@ class HomeAction extends AbstractAction {
         $this->template->js('jquery.js?_r='.rand());
         $this->template->css('home.css?_r='.rand());
         $this->template->push('title','Home · Sensitive');
-        $this->template->file($_SRCPath.'/test/templates/home.php');
+        $this->template->template('/home.php');
 	}
 }
 ?>

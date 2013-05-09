@@ -24,9 +24,20 @@ abstract class AbstractTemplate extends AbstractBase {
         $vars        = &$this->vars;
         $vars[$name] = $value;
     }
-    //set include template file path
+    //set include file path
     public function file($filepath) {
         $this->file = $filepath;
+    }
+    //set include theme template file path
+    public function template($filepath) {
+        global $_CFG,$_SRCPath;
+        $theme = &$_CFG['theme']['theme-use'];
+        $themes = &$_CFG['themes'];
+        if(array_key_exists($theme,$themes)) {
+            $this->file = $_SRCPath.$_CFG['theme']['theme-dir'].$themes[$theme]['tpl'].$filepath;
+        } else {
+            $this->file = $filepath;
+        }
     }
     //set include js path
     public function js($js) {
