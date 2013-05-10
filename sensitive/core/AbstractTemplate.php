@@ -12,6 +12,13 @@ abstract class AbstractTemplate extends AbstractBase {
         $this->config = $config;
     }
     public function init() {//must return $this
+        global $_CFG,$_SRCPath;
+        $lang = &$_CFG['language'];
+        $langs = &$_CFG['languages'];
+        if($lang && array_key_exists($lang,$langs) && file_exists($_SRCPath.$langs[$lang])) {
+            include $_SRCPath.$langs[$lang];
+        }
+        
         return $this;
     }
     //push header for output
@@ -42,12 +49,24 @@ abstract class AbstractTemplate extends AbstractBase {
     //set include js path
     public function js($js) {
         $jses   = &$this->jses;
-        $jses[] = $js;
+        if(is_array($js)) {
+            foreach($js as $i=>$j) {
+                $jses[] = $j;
+            }
+        } else {
+            $jses[] = $js;
+        }
     }
     //set include css path
     public function css($css) {
         $csses   = &$this->csses;
-        $csses[] = $css;
+        if(is_array($css)) {
+            foreach($css as $i=>$c) {
+                $csses[] = $c;
+            }
+        } else {
+            $csses[] = $css;
+        }
     }
     //output json
     public function json() {
@@ -69,7 +88,7 @@ abstract class AbstractTemplate extends AbstractBase {
     }
     //output template
     public function out() {
-        global $_SRCPath;
+        global $_SRCPath,$_CFG,$_LAN;
         $templateVars = &$this->vars;
         $templateFile = &$this->file;
         $jses         = &$this->jses;
