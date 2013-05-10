@@ -1,7 +1,7 @@
 <?php
 if(!defined('INIT_SENSITIVE')) { exit; }
 
-global $_CFG;
+global $_CFG,$_LAN;
 
 $_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
@@ -80,4 +80,8 @@ $_CFG['stores']['default']['database'] = 'sso';
 $_CFG['stores']['default']['encoding'] = 'UTF8';
 $_CFG['stores']['default']['showsql'] = true;
 $_CFG['actions']['index'] = &$_CFG['actions']['default'];
+
+$_CFG['LAN'];
+
+$_LAN = &$_CFG['LAN'];
 ?>
