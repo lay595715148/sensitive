@@ -45,7 +45,7 @@ abstract class AbstractAction extends AbstractBase {
     }
     public function launch() {
     }
-    public function dispatch() {//must return $this
+    public function dispatch($e = null) {//must return $this
         global $_CFG;
 
         $dispatchkey = $_CFG['action']['dispatch-key'];
@@ -66,9 +66,11 @@ abstract class AbstractAction extends AbstractBase {
 
         if(method_exists($this,$method) && $method != 'init' && $method != 'tail' && $method != 'dispatch' && substr($method,0,2) != '__') {
             $this->$method();
+        } else if($e){
+            $this->launch($e);
         } else {
             $this->launch();
-        }
+		}
         
         return $this;
     }

@@ -6,6 +6,7 @@ global $_CFG,$_LAN;
 $_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
 $_CFG['routes-start']                       = false;
+$_CFG['try-excption']                       = false;
 
 //配置主题，相对于$_SRCPath
 $_CFG['theme']['theme-dir']                 = '';//相对$_SRCPath
@@ -45,6 +46,8 @@ $_CFG['classes']['DefaultStore']            = '/sensitive/default/DefaultStore.p
 $_CFG['classes']['DefaultTableBean']        = '/sensitive/default/DefaultTableBean.php';
 $_CFG['classes']['DefaultTemplate']         = '/sensitive/default/DefaultTemplate.php';
 
+$_CFG['classes']['Interface_Grasp']         = '/sensitive/core/Interface_Grasp.php';
+
 $_CFG['classes']['Mysql']                   = '/sensitive/store/Mysql.php';
 
 $_CFG['classes']['Cell']                    = '/sensitive/util/Cell.php';
@@ -61,6 +64,7 @@ $_CFG['classes']['Security']                = '/sensitive/security/Security.php'
 
 $_CFG['classes']['JsAction']                = '/sensitive/action/JsAction.php';
 $_CFG['classes']['CssAction']               = '/sensitive/action/CssAction.php';
+$_CFG['classes']['ExceptionAction']         = '/sensitive/action/ExceptionAction.php';
 
 //配置表结构映射
 $_CFG['mapping']['tables']['DefaultTableBean'] = 'default';
@@ -69,6 +73,7 @@ $_CFG['mapping']['DefaultTableBean'] = array('foo'=>'foo_field','boo'=>'boo_fiel
 $_CFG['actions']['default']['classname'] = 'DefaultAction';
 $_CFG['actions']['default']['services'] = array('default');
 $_CFG['actions']['default']['beans'] = array('default');
+$_CFG['actions']['exception']['classname'] = 'ExceptionAction';
 $_CFG['beans']['default']['classname'] = 'DefaultBean';
 $_CFG['services']['default']['classname'] = 'DefaultService';
 $_CFG['services']['default']['store'] = 'default';
@@ -81,7 +86,7 @@ $_CFG['stores']['default']['encoding'] = 'UTF8';
 $_CFG['stores']['default']['showsql'] = true;
 $_CFG['actions']['index'] = &$_CFG['actions']['default'];
 
-$_CFG['LAN'];
+$_CFG['LAN'] = array();
 
 $_LAN = &$_CFG['LAN'];
 ?>

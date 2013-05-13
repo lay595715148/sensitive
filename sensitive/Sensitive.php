@@ -16,13 +16,22 @@ class Sensitive extends AbstractBase {
         return self::$Instance;
     }
     public static function start() {
+        global $_CFG;
         $instance = Sensitive::getInstance();
-        $instance->run();
+		$instance->run();
     }
     public function run() {
         global $_CFG;
         $actionGen = new DefaultActionGen();
-        $action    = $actionGen->genAction()->init()->dispatch()->tail();
+        if($_CFG['try-excption'] === true) {
+			try {
+				$actionGen->genAction()->init()->dispatch()->tail();
+			} catch(Exception $e) {
+				$actionGen->genAction('exception')->init()->dispatch()->grasp($e)->tail();
+			}
+		} else {
+			$actionGen->genAction()->init()->dispatch()->tail();
+		}
     }
 }
 

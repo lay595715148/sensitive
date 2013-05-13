@@ -4,7 +4,7 @@ if(!defined('INIT_SENSITIVE')) { exit; }
 class DefaultActionGen extends AbstractActionGen {
     public function genAction($keyword = '') {
         global $_CFG;
-        $ext = pathinfo($_SERVER['PHP_SELF']);
+        $ext = pathinfo(($keyword && is_string($keyword))?$keyword:$_SERVER['PHP_SELF']);
         $dirname = substr($ext['dirname'],11);
         $filename = $ext['filename'];
         $extension = $ext['extension'];
