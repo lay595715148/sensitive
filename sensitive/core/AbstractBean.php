@@ -131,7 +131,7 @@ abstract class AbstractBean extends AbstractBase {
         }
         foreach($this->toArray() as $k=>$v) {
             if(array_key_exists($k, $scope)) {
-                $this->$k = $scope[$k];
+                $this->$k = is_numeric($v)?(0 + $scope[$k]):$scope[$k];
             }
         }
         return $this;

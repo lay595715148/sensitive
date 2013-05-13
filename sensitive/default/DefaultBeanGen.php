@@ -12,11 +12,14 @@ class DefaultBeanGen extends AbstractBeanGen {
             && is_string($_CFG['beans'][$name]['classname']) 
             && class_exists($_CFG['beans'][$name]['classname'])) {
             $classname = $_CFG['beans'][$name]['classname'];
-            $bean = new $classname($_CFG['beans'][$name]);
+            $bean = new $classname();
+			$bean->build($_CFG['beans'][$name]['scope']);
         } else if($name && array_key_exists($classname,$_CFG['classes'])) {
             $bean = new $classname();
+			$bean->build();
         } else {
             $bean = new DefaultBean();
+			$bean->build();
         }
         return $bean;
     }
