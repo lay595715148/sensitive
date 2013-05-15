@@ -73,11 +73,53 @@ class Transfer extends AbstractBase {
      * 
      * @return php content
      */
-    public static function array2PHPContent($arr) {
-        $r = '<?php return ';
-        self::a2s($r,$arr);
-        $r .= ';?>';
+    public static function array2PHPContent($arr,$encrypt = true) {
+		global $_CFG;
+		if($_CFG['cache']['cache-encrypt'] && $encrypt) {
+            $r = '';
+            $r .= self::Array2String($arr);
+		} else {
+			$r = '<?php return ';
+			self::a2s($r,$arr);
+			$r .= ';?>';
+		}
         return $r;
+    }
+    /*在Array和String类型之间转换，转换为字符串的数组可以直接在URL上传递*/
+    // convert a multidimensional array to url save and encoded string
+    // usage: string Array2String( array Array )
+    public static function Array2String($Array) {
+        $Return='';
+        $NullValue="^^^";
+        foreach ($Array as $Key => $Value) {
+            if(is_array($Value))
+                $ReturnValue='^^array^'.self::Array2String($Value);
+            else
+                $ReturnValue=(strlen($Value)>0)?$Value:$NullValue;
+            $Return.=urlencode(base64_encode($Key)) . '|' . urlencode(base64_encode($ReturnValue)).'||';
+        }
+        return urlencode(substr($Return,0,-2));
+    }
+    // convert a string generated with Array2String() back to the original (multidimensional) array
+    // usage: array String2Array ( string String)
+    public static function String2Array($String) {
+        $Return=array();
+        $String=urldecode($String);
+        $TempArray=explode('||',$String);
+        $NullValue=urlencode(base64_encode("^^^"));
+        foreach ($TempArray as $TempValue) {
+            list($Key,$Value)=explode('|',$TempValue);
+            $DecodedKey=base64_decode(urldecode($Key));
+            if($Value!=$NullValue) {
+                $ReturnValue=base64_decode(urldecode($Value));
+                if(substr($ReturnValue,0,8)=='^^array^')
+                    $ReturnValue=self::String2Array(substr($ReturnValue,8));
+                $Return[$DecodedKey]=$ReturnValue;
+            }
+            else
+            $Return[$DecodedKey]=NULL;
+        }
+        return $Return;
     }
     /**
      * array $a to string $r

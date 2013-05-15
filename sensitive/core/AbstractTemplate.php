@@ -5,6 +5,7 @@ abstract class AbstractTemplate extends AbstractBase {
     protected $config = array();
     protected $vars = array();
     protected $headers = array();
+    protected $metas = array();
     protected $jses = array();
     protected $csses = array();
     protected $file;
@@ -44,6 +45,17 @@ abstract class AbstractTemplate extends AbstractBase {
             $this->file = $_SRCPath.$_CFG['theme']['theme-dir'].$themes[$theme]['tpl'].$filepath;
         } else {
             $this->file = $filepath;
+        }
+    }
+    //set meta infomation
+    public function meta($meta) {
+        $metas = &$this->metas;
+        if(is_array($meta)) {
+            foreach($meta as $i=>$m) {
+                $metas[] = $m;
+            }
+        } else {
+            $metas[] = $meta;
         }
     }
     //set include js path
@@ -91,6 +103,7 @@ abstract class AbstractTemplate extends AbstractBase {
         global $_SRCPath,$_CFG,$_LAN;
         $templateVars = &$this->vars;
         $templateFile = &$this->file;
+        $metas        = &$this->metas;
         $jses         = &$this->jses;
         $csses        = &$this->csses;
         $headers      = &$this->headers;

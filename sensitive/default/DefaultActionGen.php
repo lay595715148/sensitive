@@ -7,7 +7,7 @@ class DefaultActionGen extends AbstractActionGen {
         $ext = pathinfo(($keyword && is_string($keyword))?$keyword:$_SERVER['PHP_SELF']);
         $dirname = substr($ext['dirname'],11);
         $filename = $ext['filename'];
-        $extension = $ext['extension'];
+        $extension = array_key_exists('extension',$ext)?$ext['extension']:'';
         if($dirname != '' && ($dirname === 'js' || $dirname === 'css')) {
             $classname = ucwords($dirname).'Action';//对应的类名
             $action = new $classname();

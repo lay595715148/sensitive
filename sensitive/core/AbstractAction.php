@@ -76,7 +76,7 @@ abstract class AbstractAction extends AbstractBase {
     }
     public function tail() {//must return $this
         $ext = pathinfo($_SERVER['PHP_SELF']);
-        $extension = $ext['extension'];
+        $extension = array_key_exists('extension',$ext)?$ext['extension']:'';
         switch($extension) {
             case 'json':
                 $this->template->header('Content-Type: application/json');
