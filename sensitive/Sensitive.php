@@ -23,7 +23,7 @@ class Sensitive extends AbstractBase {
     public function run() {
         global $_CFG;
         $actionGen = new DefaultActionGen();
-        if($_CFG['try-excption'] === true) {
+        if($_CFG['try-exception'] === true) {
 			try {
 				$actionGen->genAction()->init()->dispatch()->tail();
 			} catch(Exception $e) {

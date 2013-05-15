@@ -6,7 +6,7 @@ global $_CFG,$_LAN;
 $_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
 $_CFG['routes-start']                       = false;
-$_CFG['try-excption']                       = false;
+$_CFG['try-exception']                      = false;
 
 //配置主题，相对于$_SRCPath
 $_CFG['theme']['theme-dir']                 = '';//相对$_SRCPath
