@@ -5,6 +5,8 @@ global $_CFG,$_LAN;
 
 $_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
+$_CFG['session-mysql']                      = true;
+$_CFG['session-lifetime']                   = 1800;
 $_CFG['routes-start']                       = false;
 $_CFG['try-exception']                      = false;
 
@@ -59,6 +61,7 @@ $_CFG['classes']['Scope']                   = '/sensitive/util/Scope.php';
 $_CFG['classes']['Paging']                  = '/sensitive/util/Paging.php';
 $_CFG['classes']['TableBean']               = '/sensitive/util/TableBean.php';
 $_CFG['classes']['Parser']                  = '/sensitive/util/Parser.php';
+$_CFG['classes']['Util']                    = '/sensitive/util/Util.php';
 
 $_CFG['classes']['Security']                = '/sensitive/security/Security.php';
 

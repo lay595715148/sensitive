@@ -13,7 +13,7 @@ abstract class AbstractService extends AbstractBase {
         $store      = &$this->store;
         $storeGen   = new DefaultStoreGen();
 
-        if($config['store'] && is_string($config['store'])) {
+        if(is_array($config) && array_key_exists('store',$config) && $config['store'] && is_string($config['store'])) {
             //加载配置中的store
             $store = $storeGen->genStore($config['store'])->init();
         } else {

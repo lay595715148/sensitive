@@ -19,7 +19,7 @@ abstract class AbstractAction extends AbstractBase {
         $beanGen     = new DefaultBeanGen();
         $templateGen = new DefaultTemplateGen();
 
-        if($config['services'] && is_array($config['services'])) {
+        if(is_array($config) && array_key_exists('services',$config) && $config['services'] && is_array($config['services'])) {
             //加载配置中的所有service
             foreach($config['services'] as $k=>$v) {
                 $service = $serviceGen->genService($v)->init();
@@ -29,7 +29,7 @@ abstract class AbstractAction extends AbstractBase {
             $service = $serviceGen->genService()->init();
             $services[] = $service;
         }
-        if($config['beans'] && is_array($config['beans'])) {
+        if(is_array($config) && array_key_exists('beans',$config) && $config['beans'] && is_array($config['beans'])) {
             //加载配置中的所有bean
             foreach($config['beans'] as $k=>$v) {
                 $bean = $beanGen->genBean($v);

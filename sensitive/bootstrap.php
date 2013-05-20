@@ -19,7 +19,17 @@ require_once $_SRCPath.'/sensitive/config.php';
 require_once $_SRCPath.'/test/config.php';//额外的
 global $_CFG;
 
-if($_CFG['session-start']) { session_start(); }
+//session init
+if(array_key_exists('session-start',$_CFG) && $_CFG['session-start']) {
+	session_start();
+	if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
+		ini_set('session.gc_maxlifetime',0+$_CFG['session-lifetime']);
+	}
+} else if(array_key_exists('session-mysql',$_CFG) && $_CFG['session-mysql']) {
+	if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
+		ini_set('session.gc_maxlifetime',0+$_CFG['session-lifetime']);
+	}
+}
 
 //类自动加载函数
 function __autoload($name) {
