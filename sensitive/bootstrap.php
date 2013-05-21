@@ -20,15 +20,16 @@ require_once $_SRCPath.'/test/config.php';//额外的
 global $_CFG;
 
 //session init
-if(array_key_exists('session-start',$_CFG) && $_CFG['session-start']) {
+//session init
+if(array_key_exists('session-name',$_CFG) && $_CFG['session-name']) {
+	session_name($_CFG['session-name']);
+}
+if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
+	$_sess = session_get_cookie_params();
+	session_set_cookie_params(0+$_CFG['session-lifetime'],$_sess['path'],$_sess['domain'],true,true);
+}
+if(array_key_exists('session-start',$_CFG) && $_CFG['session-start'] && (!array_key_exists('session-mysql',$_CFG) || !$_CFG['session-mysql'])) {
 	session_start();
-	if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
-		ini_set('session.gc_maxlifetime',0+$_CFG['session-lifetime']);
-	}
-} else if(array_key_exists('session-mysql',$_CFG) && $_CFG['session-mysql']) {
-	if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
-		ini_set('session.gc_maxlifetime',0+$_CFG['session-lifetime']);
-	}
 }
 
 //类自动加载函数

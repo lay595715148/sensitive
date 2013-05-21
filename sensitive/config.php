@@ -6,6 +6,7 @@ global $_CFG,$_LAN;
 $_CFG['timing']                             = false;
 $_CFG['session-start']                      = false;
 $_CFG['session-mysql']                      = true;
+$_CFG['session-name']                       = '';
 $_CFG['session-lifetime']                   = 1800;
 $_CFG['routes-start']                       = false;
 $_CFG['try-exception']                      = false;
