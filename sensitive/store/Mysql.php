@@ -53,7 +53,7 @@ class Mysql extends AbstractStore {
 
         return $result;
     }
-    public function insert($table, $fields = '', $values = '', $replace = false) {
+    public function insert($table, $fields = '', $values = '', $replace = false, $returnid = true) {
         $result = &$this->result;
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
@@ -72,7 +72,7 @@ class Mysql extends AbstractStore {
         $sql    = (($replace)?'REPLACE':'INSERT')." INTO $table ( $fields ) VALUES ( $values )";
         $result = $this->query($sql);
 
-        return $result;
+        return ($returnid)?mysql_insert_id($link):$result;
     }
     public function delete($table, $condition = '') {
         $result = &$this->result;

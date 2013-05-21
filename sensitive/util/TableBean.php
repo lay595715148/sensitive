@@ -6,11 +6,13 @@ class TableBean extends AbstractBean {
 		global $_CFG;
         $className = get_class($this);
         $tables    = &$_CFG['mapping']['tables'];
+        if(!array_key_exists($className,$_CFG['mapping']['tables'])) throw new TableMappingException('There\'s no table mapping in $_CFG[\'mapping\'][\'tables\']');
         return $tables[$className];
     }
     public function toField($property) {
 		global $_CFG;
         $className = get_class($this);
+        if(!array_key_exists($className,$_CFG['mapping'])) throw new TableMappingException('There\'s no table fields mapping in $_CFG[\'mapping\']');
         $mapping   = &$_CFG['mapping'][$className];
         $field     = ($mapping && array_key_exists($property,$mapping))?$mapping[$property]:$property;
         return $field;
@@ -18,6 +20,7 @@ class TableBean extends AbstractBean {
     public function toFields() {
 		global $_CFG;
         $className = get_class($this);
+        if(!array_key_exists($className,$_CFG['mapping'])) throw new TableMappingException('There\'s no table fields mapping in $_CFG[\'mapping\']');
         $mapping   = &$_CFG['mapping'][$className];
         $fields    = array();
         if($mapping) {
@@ -30,9 +33,27 @@ class TableBean extends AbstractBean {
 			return;
 		}
     }
+    public function toInsertFields() {
+		global $_CFG;
+        $className = get_class($this);
+        if(!array_key_exists($className,$_CFG['mapping'])) throw new TableMappingException('There\'s no table fields mapping in $_CFG[\'mapping\']');
+        $mapping   = &$_CFG['mapping'][$className];
+        $fields    = array();
+        if($mapping) {
+            foreach($this->toArray() as $k=>$v) {
+                if($k === 'id') continue;
+                $name     = $k;
+                $fields[] = array_key_exists($name,$mapping)?$mapping[$name]:$name;
+            }
+			return $fields;
+        } else {
+			return;
+		}
+	}
     public function toValues() {
 		global $_CFG;
         $className = get_class($this);
+        if(!array_key_exists($className,$_CFG['mapping'])) throw new TableMappingException('There\'s no table fields mapping in $_CFG[\'mapping\']');
         $mapping   = &$_CFG['mapping'][$className];
         $values    = array();
         if($mapping) {
@@ -66,6 +87,7 @@ class TableBean extends AbstractBean {
 		global $_CFG;
         $className = get_class($this);
         $mapping   = &$_CFG['mapping'][$className];
+        if(!array_key_exists($className,$_CFG['mapping'])) throw new TableMappingException('There\'s no table fields mapping in $_CFG[\'mapping\']');
         if(is_array($row) && $mapping) {
             foreach($this->toArray() as $k=>$v) {
                     $name     = $k;
@@ -104,4 +126,5 @@ class TableBean extends AbstractBean {
 		}
     }
 }
+class TableMappingException extends Exception {}
 ?>
