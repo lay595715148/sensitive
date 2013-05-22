@@ -15,18 +15,24 @@ $_StartTime = (float)$_secondArr[0] + (float)$_secondArr[1];
 //sensitive源文件相对所在位置
 global $_SRCPath;
 
+require_once $_SRCPath.'/sensitive/function.php';
 require_once $_SRCPath.'/sensitive/config.php';
 require_once $_SRCPath.'/test/config.php';//额外的
 global $_CFG;
 
 //session init
-//session init
 if(array_key_exists('session-name',$_CFG) && $_CFG['session-name']) {
-	session_name($_CFG['session-name']);
+	//session_name($_CFG['session-name']);
+	ini_set('session.name',$_CFG['session-name']);
 }
 if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
 	$_sess = session_get_cookie_params();
-	session_set_cookie_params(0+$_CFG['session-lifetime'],$_sess['path'],$_sess['domain'],true,true);
+	session_set_cookie_params(0,$_sess['path'],$_sess['domain'],$_sess['secure'],true);
+	//ini_set('session.cookie_path',$_sess['path']);
+	//ini_set('session.cookie_domain',$_sess['domain']);
+	//ini_set('session.cookie_secure',true);
+	//ini_set('session.cookie_httponly',true);
+	ini_set('session.gc_maxlifetime',0+$_CFG['session-lifetime']);
 }
 if(array_key_exists('session-start',$_CFG) && $_CFG['session-start'] && (!array_key_exists('session-mysql',$_CFG) || !$_CFG['session-mysql'])) {
 	session_start();
