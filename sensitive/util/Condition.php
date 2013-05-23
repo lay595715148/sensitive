@@ -14,7 +14,7 @@ class Condition extends AbstractBase {
         return $this->conds;
     }
     public function setOrpos($orpos) {
-        $this->setOrpos($orpos);
+        $this->orpos = 0 + $orpos;
     }
     public function getOrpos() {
         return $this->orpos;

@@ -335,6 +335,15 @@ class Mysql extends AbstractStore {
         $mapping   = &$_CFG['mapping'][$className];
 
         foreach($arr as $k=>$v) {
+			if(is_a($v,'Condition') && $count > 0) {
+				$str .= ' AND ('.substr($this->condition2Where($v, $table),6).')';
+                $count++;
+				continue;
+			} else if(is_a($v,'Condition') && $count == 0){
+				$str .= '('.substr($this->condition2Where($v, $table),6).')';
+                $count++;
+				continue;
+			}
             $v = mysql_real_escape_string($v,$this->link);
             if(!is_numeric($k) && array_search($k,$mapping) && $count > 0) {
                 $str .= " AND `$k` = '$v'";
@@ -371,8 +380,8 @@ class Mysql extends AbstractStore {
             $field = $cell->getName();
             $value = $cell->getValue();
             if(is_array($value)) {
-                foreach($value as $k=>$v) {
-                    $value[$k] = mysql_real_escape_string($v);
+                foreach($value as $_k=>$v) {
+                    $value[$_k] = mysql_real_escape_string($v);
                 }
             } else {
                 $value = mysql_real_escape_string($value);
