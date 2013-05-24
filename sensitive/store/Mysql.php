@@ -1,7 +1,7 @@
 <?php
 if(!defined('INIT_SENSITIVE')) { exit; }
 
-class Mysql extends AbstractStore {
+final class Mysql extends AbstractStore {
     private $link;
     private $result;
     public function init() {
@@ -141,6 +141,8 @@ class Mysql extends AbstractStore {
         }
         if(is_a($order,'Arrange')) {
             $order = $this->arrange2Order($order,$table);
+        } else if(is_array($order)) {
+            $order = $this->array2Order($order,$table);
         } else if(!is_string($order)) {
             $order = "";
         }
@@ -404,6 +406,39 @@ class Mysql extends AbstractStore {
         }
         return ($str)?"WHERE $str":"WHERE 0";
     }
+    /**
+     * array('my_field'=>'DESC','your_field'=>'ASC')
+     * array('my_field'=>1,'your_field'=>0)
+     */
+    private function array2Order($arr, $table) {
+		global $_CFG;
+        $str       = '';
+        $className = $this->getClassByTable($table);
+        $mapping   = &$_CFG['mapping'][$className];
+        foreach($arr as $k=>$or) {
+			if(is_numeric($k)) {
+				$field = $or;
+				$desc  = false;
+			} else if(is_string($k)){
+				$field = $k;
+				$desc  = ($or == 'DESC' || $or)?true:false;
+			}
+            if($str === '' && array_search($field,$mapping)) {
+                $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
+            } else if($str === '' && array_key_exists($field,$mapping)) {
+                $field = $mapping[$field];
+                $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
+            } else if(array_search($field,$mapping)) {
+                $str  .= ', ';
+                $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
+            } else if(array_key_exists($field,$mapping)) {
+                $field = $mapping[$field];
+                $str  .= ', ';
+                $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
+            }
+		}
+        return ($str)?"ORDER BY $str":"";
+	}
     /**
      * analyze an instance of Arrange to order sql part
      * @param Arrange $obj

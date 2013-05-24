@@ -92,7 +92,7 @@ class TableBean extends AbstractBean {
             foreach($this->toArray() as $k=>$v) {
                     $name     = $k;
                     $key      = array_key_exists($name,$mapping)?$mapping[$name]:$name;
-                    $this->$k = $row[$key];
+                    $this->$k = array_key_exists($key,$row)?$row[$key]:'';
             }
 			return $this;
         } else {

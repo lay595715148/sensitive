@@ -54,9 +54,9 @@ abstract class AbstractBean extends AbstractBase {
         
         $propertyAliasName = strtolower($name);
         if(array_key_exists($name, $properties)) {
-			if($value) $properties[$name] = $value;
+			if($value != null) $properties[$name] = $value;
         } else if (array_key_exists($propertyAliasName, $aliases)) {
-            if($value) $properties[$aliases[$propertyAliasName]] = $value;
+            if($value != null) $properties[$aliases[$propertyAliasName]] = $value;
         } else {
             throw new PropertyNotFoundException('There is no property:'.$name.' in class:'.get_class($this));
         }
