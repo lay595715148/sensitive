@@ -156,10 +156,11 @@ final class Mysql extends AbstractStore {
         return $result;
     }
     public function toArray($count = 0, $result = '') {
-        $result = ($result)?$result:$this->result;
         $rows = array();
-        
-        if($count == 1) {
+        $result = ($result)?$result:$this->result;
+        if(!$result) {
+			
+        } else if($count == 1) {
             $rows = mysql_fetch_array($result,MYSQL_ASSOC);
         } else if($count != 0) {
             $i = 0;
@@ -203,7 +204,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function getClassByTable($table) {
-		global $_CFG;
+        global $_CFG;
         $tables    = &$_CFG['mapping']['tables'];
         $className = array_search($table,$tables);
         $className = (is_array($className))?$className[0]:$className;
@@ -216,7 +217,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function array2Field($arr,$table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $count     = 0;
         $className = $this->getClassByTable($table);
@@ -248,7 +249,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function array2Value($fields,$values,$table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $count     = 0;
         $className = $this->getClassByTable($table);
@@ -278,7 +279,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function array2Setter($fields,$values,$table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $count     = 0;
         $className = $this->getClassByTable($table);
@@ -330,22 +331,22 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function array2Where($arr,$table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $count     = 0;
         $className = $this->getClassByTable($table);
         $mapping   = &$_CFG['mapping'][$className];
 
         foreach($arr as $k=>$v) {
-			if(is_a($v,'Condition') && $count > 0) {
-				$str .= ' AND ('.substr($this->condition2Where($v, $table),6).')';
+            if(is_a($v,'Condition') && $count > 0) {
+                $str .= ' AND ('.substr($this->condition2Where($v, $table),6).')';
                 $count++;
-				continue;
-			} else if(is_a($v,'Condition') && $count == 0){
-				$str .= '('.substr($this->condition2Where($v, $table),6).')';
+                continue;
+            } else if(is_a($v,'Condition') && $count == 0){
+                $str .= '('.substr($this->condition2Where($v, $table),6).')';
                 $count++;
-				continue;
-			}
+                continue;
+            }
             $v = mysql_real_escape_string($v,$this->link);
             if(!is_numeric($k) && array_search($k,$mapping) && $count > 0) {
                 $str .= " AND `$k` = '$v'";
@@ -371,7 +372,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function condition2Where($obj, $table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $className = $this->getClassByTable($table);
         $mapping   = &$_CFG['mapping'][$className];
@@ -411,18 +412,18 @@ final class Mysql extends AbstractStore {
      * array('my_field'=>1,'your_field'=>0)
      */
     private function array2Order($arr, $table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $className = $this->getClassByTable($table);
         $mapping   = &$_CFG['mapping'][$className];
         foreach($arr as $k=>$or) {
-			if(is_numeric($k)) {
-				$field = $or;
-				$desc  = false;
-			} else if(is_string($k)){
-				$field = $k;
-				$desc  = ($or == 'DESC' || $or)?true:false;
-			}
+            if(is_numeric($k)) {
+                $field = $or;
+                $desc  = false;
+            } else if(is_string($k)){
+                $field = $k;
+                $desc  = ($or == 'DESC' || $or)?true:false;
+            }
             if($str === '' && array_search($field,$mapping)) {
                 $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
             } else if($str === '' && array_key_exists($field,$mapping)) {
@@ -436,9 +437,9 @@ final class Mysql extends AbstractStore {
                 $str  .= ', ';
                 $str  .= '`'.$field.(($desc)?'` DESC ':'` ASC ');
             }
-		}
+        }
         return ($str)?"ORDER BY $str":"";
-	}
+    }
     /**
      * analyze an instance of Arrange to order sql part
      * @param Arrange $obj
@@ -446,7 +447,7 @@ final class Mysql extends AbstractStore {
      * @return string
      */
     private function arrange2Order($obj, $table) {
-		global $_CFG;
+        global $_CFG;
         $str       = '';
         $className = $this->getClassByTable($table);
         $mapping   = &$_CFG['mapping'][$className];
