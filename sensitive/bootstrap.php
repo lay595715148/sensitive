@@ -17,7 +17,8 @@ global $_SRCPath;
 
 require_once $_SRCPath.'/sensitive/function.php';
 require_once $_SRCPath.'/sensitive/config.php';
-require_once $_SRCPath.'/test/config.php';//额外的
+//require_once $_SRCPath.'/test/config.php';//额外的
+require_once $_SRCPath.'/include/config.php';//针对sgischool
 global $_CFG;
 
 //session init
@@ -27,7 +28,7 @@ if(array_key_exists('session-name',$_CFG) && $_CFG['session-name']) {
 }
 if(array_key_exists('session-lifetime',$_CFG) && is_numeric($_CFG['session-lifetime'])) {
 	$_sess = session_get_cookie_params();
-	session_set_cookie_params(0,$_sess['path'],$_sess['domain'],$_sess['secure'],true);
+	session_set_cookie_params(0,$_sess['path'],$_sess['domain'],$_sess['secure'],$_sess['httponly']);
 	//ini_set('session.cookie_path',$_sess['path']);
 	//ini_set('session.cookie_domain',$_sess['domain']);
 	//ini_set('session.cookie_secure',true);
@@ -60,6 +61,7 @@ try {
     echo '<pre>';print_r($e->getMessage()."\n");print_r($e->getTraceAsString());echo '</pre>';
 }
 
+//timing
 if($_CFG['timing'] === true) {
     global $_EndTime;
     $_secondArr = explode(' ', microtime());
