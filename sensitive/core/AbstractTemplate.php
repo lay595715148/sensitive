@@ -27,6 +27,18 @@ abstract class AbstractTemplate extends AbstractBase {
         $headers   = &$this->headers;
         $headers[] = $header;
     }
+    //set title ,if $append equal false, then reset title;if $append equal 1 or true,then append end position; other append start position
+    public function title($str, $append = false) {
+        $vars  = &$this->vars;
+		$title = isset($vars['title'])?$vars['title']:false;
+		if(!$title || $append === false) {
+			$vars['title'] = $str;
+		} else if($append && $append === 1) {
+			$vars['title'] = $title.$str;
+		} else {
+			$vars['title'] = $str.$title;
+		}
+	}
     //push variables with a name
     public function push($name, $value) {
         $vars        = &$this->vars;
