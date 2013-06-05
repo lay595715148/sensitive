@@ -7,6 +7,7 @@ abstract class AbstractTemplate extends AbstractBase {
     protected $headers = array();
     protected $metas = array();
     protected $jses = array();
+    protected $javascript = array();
     protected $csses = array();
     protected $file;
     public function __construct($config = '') {
@@ -81,6 +82,17 @@ abstract class AbstractTemplate extends AbstractBase {
             $jses[] = $js;
         }
     }
+    //set include js path
+    public function javascript($js) {
+        $javascript   = &$this->javascript;
+        if(is_array($js)) {
+            foreach($js as $i=>$j) {
+                $javascript[] = $j;
+            }
+        } else {
+            $javascript[] = $js;
+        }
+    }
     //set include css path
     public function css($css) {
         $csses   = &$this->csses;
@@ -117,6 +129,7 @@ abstract class AbstractTemplate extends AbstractBase {
         $templateFile = &$this->file;
         $metas        = &$this->metas;
         $jses         = &$this->jses;
+        $javascript   = &$this->javascript;
         $csses        = &$this->csses;
         $headers      = &$this->headers;
 
