@@ -6,7 +6,7 @@ class Paging extends AbstractBean {
     public function __construct(&$properties = '') {
         $this->properties = array(
             'page' => 0,//当前页码,默认为1,第1页即为1,尾页为-1
-            'pageSize' => 0,//一页内记录数,默认为20,不分页为-1
+            'pageSize' => 10,//一页内记录数,默认为20,不分页为-1
             'pageCount' => 0,//页数
             'count' => 0,//总记录数
             'text' => '',//总记录数
