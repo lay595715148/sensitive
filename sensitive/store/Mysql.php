@@ -126,8 +126,10 @@ final class Mysql extends AbstractStore {
             $fields = $this->array2Field($fields,$table);
         } else if($fields && !is_string($fields)) {
             return false;
+		} else if(is_string($fields) && trim($fields)) {
+			//
         } else {
-            $fields = ' * ';
+            $fields = '*';
         }
         if(is_array($condition)) {
             $condition = $this->array2Where($condition,$table);
@@ -155,6 +157,28 @@ final class Mysql extends AbstractStore {
 
         return $result;
     }
+    /* count */
+    public function count($table, $condition = '', $group = '') {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+        
+        if(is_array($condition)) {
+            $condition = $this->array2Where($condition,$table);
+        } else if(is_a($condition,'Condition')) {
+            $condition = $this->condition2Where($condition,$table);
+        } else if(!is_string($condition)) {
+            return false;
+        }
+        if(!is_string($group)) {
+            $group = "";
+        }
+        
+        $sql    = "SELECT count(*) as count FROM $table $condition $group";
+        $result = $this->query($sql);
+        
+		return $result;
+	}
     public function toArray($count = 0, $result = '') {
         $rows = array();
         $result = ($result)?$result:$this->result;
