@@ -121,6 +121,36 @@ final class Mysql extends AbstractStore {
         $result = &$this->result;
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
+        
+        $sql = $this->selectSQL($table, $fields, $condition, $group, $order, $limit);
+        $result = $this->query($sql);
+
+        return $result;
+    }
+    /* count */
+    public function count($table, $condition = '', $group = '') {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+        
+        if(is_array($condition)) {
+            $condition = $this->array2Where($condition,$table);
+        } else if(is_a($condition,'Condition')) {
+            $condition = $this->condition2Where($condition,$table);
+        } else if(!is_string($condition)) {
+            return false;
+        }
+        if(!is_string($group)) {
+            $group = "";
+        }
+        
+        $sql    = "SELECT count(*) as count FROM $table $condition $group";
+        $result = $this->query($sql);
+        
+		return $result;
+	}
+	public function selectSQL($table, $fields = '', $condition = '', $group = '', $order = '', $limit = '') {//$group is not useful
+        if(!is_string($table) || !$table) { return false; }
 
         if(is_array($fields)) {
             $fields = $this->array2Field($fields,$table);
@@ -153,31 +183,7 @@ final class Mysql extends AbstractStore {
         }
 
         $sql    = "SELECT $fields FROM $table $condition $group $order $limit";
-        $result = $this->query($sql);
-
-        return $result;
-    }
-    /* count */
-    public function count($table, $condition = '', $group = '') {
-        $result = &$this->result;
-        $link   = &$this->link;
-        if(!is_string($table) || !$table || !$link) { return false; }
-        
-        if(is_array($condition)) {
-            $condition = $this->array2Where($condition,$table);
-        } else if(is_a($condition,'Condition')) {
-            $condition = $this->condition2Where($condition,$table);
-        } else if(!is_string($condition)) {
-            return false;
-        }
-        if(!is_string($group)) {
-            $group = "";
-        }
-        
-        $sql    = "SELECT count(*) as count FROM $table $condition $group";
-        $result = $this->query($sql);
-        
-		return $result;
+        return $sql;
 	}
     public function toArray($count = 0, $result = '') {
         $rows = array();
