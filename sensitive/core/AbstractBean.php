@@ -44,8 +44,8 @@ abstract class AbstractBean extends AbstractBase {
      * @return void
      */
     public function __set($name, $value) {
-		$aliases = &$this->aliases;
-		$properties = &$this->properties;
+        $aliases = &$this->aliases;
+        $properties = &$this->properties;
         if(empty($aliases)) {
             foreach(array_keys($properties) as $key) {
                 $aliases[strtolower($key)] = $key;
@@ -54,7 +54,7 @@ abstract class AbstractBean extends AbstractBase {
         
         $propertyAliasName = strtolower($name);
         if(array_key_exists($name, $properties)) {
-			if($value != null) $properties[$name] = $value;
+            if($value != null) $properties[$name] = $value;
         } else if (array_key_exists($propertyAliasName, $aliases)) {
             if($value != null) $properties[$aliases[$propertyAliasName]] = $value;
         } else {
@@ -76,10 +76,10 @@ abstract class AbstractBean extends AbstractBase {
                 $aliases[strtolower($key)] = $key;
             }
         }
-		
+        
         $propertyAliasName = strtolower($name);
         if(array_key_exists($name, $properties)) {
-			return $properties[$name];
+            return $properties[$name];
         } else if (array_key_exists($propertyAliasName, $aliases)) {
             return $properties[$aliases[$propertyAliasName]];
         } else {
@@ -131,7 +131,7 @@ abstract class AbstractBean extends AbstractBase {
         }
         foreach($this->toArray() as $k=>$v) {
             if(array_key_exists($k, $scope)) {
-                $this->$k = is_numeric($v)?(0 + $scope[$k]):$scope[$k];
+                $this->$k = is_string($scope[$k])?trim($scope[$k]):$scope[$k];//is_numeric($v)?(0 + $scope[$k])://类型判断去除
             }
         }
         return $this;
