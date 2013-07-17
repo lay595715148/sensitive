@@ -6,11 +6,13 @@ abstract class AbstractAction extends AbstractBase {
     protected $services = array();
     protected $beans = array();
     protected $template;
+    protected $pathinfo = array();
     public function __construct($config = '') {
         $this->config = $config;
     }
     public function init() {//must return $this
-        //echo 'AbstractAction init';
+        $this->pathinfo = pathinfo($_SERVER['PHP_SELF']);
+        
         $config      = &$this->config;
         $services    = &$this->services;
         $beans       = &$this->beans;
@@ -75,7 +77,7 @@ abstract class AbstractAction extends AbstractBase {
         return $this;
     }
     public function tail() {//must return $this
-        $ext = pathinfo($_SERVER['PHP_SELF']);
+        $ext = &$this->pathinfo;
         $extension = array_key_exists('extension',$ext)?$ext['extension']:'';
         switch($extension) {
             case 'json':
