@@ -17,8 +17,7 @@ global $_SRCPath;
 
 require_once $_SRCPath.'/sensitive/function.php';
 require_once $_SRCPath.'/sensitive/config.php';
-//require_once $_SRCPath.'/test/config.php';//额外的
-require_once $_SRCPath.'/include/config.php';//针对sgischool
+require_once $_SRCPath.'/test/config.php';//额外的
 global $_CFG;
 
 //session init
