@@ -49,6 +49,7 @@ $_CFG['classes']['DefaultStore']            = '/sensitive/default/DefaultStore.p
 $_CFG['classes']['DefaultTableBean']        = '/sensitive/default/DefaultTableBean.php';
 $_CFG['classes']['DefaultTemplate']         = '/sensitive/default/DefaultTemplate.php';
 
+$_CFG['classes']['Interface_DBPerform']     = '/sensitive/core/Interface_DBPerform.php';
 $_CFG['classes']['Interface_Grasp']         = '/sensitive/core/Interface_Grasp.php';
 
 $_CFG['classes']['Mysql']                   = '/sensitive/store/Mysql.php';

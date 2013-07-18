@@ -1,10 +1,14 @@
 <?php
 if(!defined('INIT_SENSITIVE')) { exit; }
 
-final class Mysql extends AbstractStore {
+final class Mysql extends AbstractStore implements Interface_DBPerform {
     private $link;
     private $result;
     public function init() {
+        $this->open();
+        return $this;
+    }
+    public function open() {
         $config = &$this->config;
         $link   = &$this->link;
 
@@ -20,8 +24,7 @@ final class Mysql extends AbstractStore {
         } else {
             throw new MysqlException('Cannot connect to mysql server:'.$host.'!');
         }
-        return $this;
-    }
+	}
     /**
      * @return boolean
      */
@@ -58,18 +61,7 @@ final class Mysql extends AbstractStore {
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
 
-        if(is_array($values)) {
-            $values = $this->array2Value($fields,$values,$table);
-        } else if(!is_string($values)) {
-            return false;
-        }
-        if(is_array($fields)) {
-            $fields = $this->array2Field($fields,$table);
-        } else if(!is_string($fields)) {
-            return false;
-        }
-        
-        $sql    = (($replace)?'REPLACE':'INSERT')." INTO $table ( $fields ) VALUES ( $values )";
+        $sql = $this->insertSQL($table, $fields, $values, $replace);
         $result = $this->query($sql);
 
         return ($returnid)?mysql_insert_id($link):$result;
@@ -79,15 +71,7 @@ final class Mysql extends AbstractStore {
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
 
-        if(is_array($condition)) {
-            $condition = $this->array2Where($condition,$table);
-        } else if(is_a($condition,'Condition')) {
-            $condition = $this->condition2Where($condition,$table);
-        } else if(!is_string($condition)) {
-            return false;
-        }
-        
-        $sql    = "DELETE FROM $table $condition";
+        $sql = $this->deleteSQL($table, $condition);
         $result = $this->query($sql);
 
         return $result;
@@ -97,22 +81,7 @@ final class Mysql extends AbstractStore {
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
 
-        if(is_array($values) && is_array($fields)) {
-            $values = $this->array2Setter($fields,$values,$table);
-        } else if(is_array($values)){
-            $values = $this->array2Setter('',$values,$table);
-        } else if(!is_string($values)) {
-            return false;
-        }
-        if(is_array($condition)) {
-            $condition = $this->array2Where($condition,$table);
-        } else if(is_a($condition,'Condition')) {
-            $condition = $this->condition2Where($condition,$table);
-        } else if(!is_string($condition)) {
-            return false;
-        }
-        
-        $sql    = "UPDATE $table SET $values $condition";
+        $sql = $this->updateSQL($table, $fields, $values, $condition);
         $result = $this->query($sql);
 
         return $result;
@@ -133,6 +102,35 @@ final class Mysql extends AbstractStore {
         $link   = &$this->link;
         if(!is_string($table) || !$table || !$link) { return false; }
         
+        $sql = $this->countSQL($table, $condition, $group);
+        $result = $this->query($sql);
+        
+		return $result;
+	}
+    public function insertSQL($table, $fields = '', $values = '', $replace = false) {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+
+        if(is_array($values)) {
+            $values = $this->array2Value($fields,$values,$table);
+        } else if(!is_string($values)) {
+            return false;
+        }
+        if(is_array($fields)) {
+            $fields = $this->array2Field($fields,$table);
+        } else if(!is_string($fields)) {
+            return false;
+        }
+        
+        $sql    = (($replace)?'REPLACE':'INSERT')." INTO $table ( $fields ) VALUES ( $values )";
+        return $sql;
+	}
+    public function deleteSQL($table, $condition = '') {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+
         if(is_array($condition)) {
             $condition = $this->array2Where($condition,$table);
         } else if(is_a($condition,'Condition')) {
@@ -140,14 +138,32 @@ final class Mysql extends AbstractStore {
         } else if(!is_string($condition)) {
             return false;
         }
-        if(!is_string($group)) {
-            $group = "";
+        
+        $sql    = "DELETE FROM $table $condition";
+        return $sql;
+	}
+    public function updateSQL($table, $fields = '', $values = '', $condition = '') {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+
+        if(is_array($values) && is_array($fields)) {
+            $values = $this->array2Setter($fields,$values,$table);
+        } else if(is_array($values)){
+            $values = $this->array2Setter('',$values,$table);
+        } else if(!is_string($values)) {
+            return false;
+        }
+        if(is_array($condition)) {
+            $condition = $this->array2Where($condition,$table);
+        } else if(is_a($condition,'Condition')) {
+            $condition = $this->condition2Where($condition,$table);
+        } else if(!is_string($condition)) {
+            return false;
         }
         
-        $sql    = "SELECT count(*) as count FROM $table $condition $group";
-        $result = $this->query($sql);
-        
-		return $result;
+        $sql    = "UPDATE $table SET $values $condition";
+        return $sql;
 	}
 	public function selectSQL($table, $fields = '', $condition = '', $group = '', $order = '', $limit = '') {//$group is not useful
         if(!is_string($table) || !$table) { return false; }
@@ -183,6 +199,25 @@ final class Mysql extends AbstractStore {
         }
 
         $sql    = "SELECT $fields FROM $table $condition $group $order $limit";
+        return $sql;
+	}
+	public function countSQL($table, $condition = '', $group = '') {
+        $result = &$this->result;
+        $link   = &$this->link;
+        if(!is_string($table) || !$table || !$link) { return false; }
+        
+        if(is_array($condition)) {
+            $condition = $this->array2Where($condition,$table);
+        } else if(is_a($condition,'Condition')) {
+            $condition = $this->condition2Where($condition,$table);
+        } else if(!is_string($condition)) {
+            return false;
+        }
+        if(!is_string($group)) {
+            $group = "";
+        }
+        
+        $sql    = "SELECT count(*) as count FROM $table $condition $group";
         return $sql;
 	}
     public function toArray($count = 0, $result = '') {
