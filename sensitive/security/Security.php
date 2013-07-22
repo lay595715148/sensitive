@@ -1,5 +1,5 @@
 <?php
-class Security extends Base {
+class Security extends AbstractBase {
     private static $key = 'MsuY7U0iF=s=';
 	/**
 	 * @param $txt 要加密字符串

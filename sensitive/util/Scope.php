@@ -1,7 +1,7 @@
 <?php
 if(!defined('INIT_SENSITIVE')) { exit; }
 
-class Scope {
+class Scope extends AbstractBase {
     const SCOPE_REQUEST = 0;
     const SCOPE_GET = 1;
     const SCOPE_POST = 2;
