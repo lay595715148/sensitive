@@ -1,12 +1,24 @@
 <?php
+/**
+ * 分页数据模型类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * 分页数据模型类
+ * @author liaiyong
+ */
 class Paging extends AbstractBean {
 
-    public function __construct(&$properties = '') {
+    /**
+     * 构造方法
+     */
+    public function __construct() {
         $this->properties = array(
             'page' => 0,//当前页码,默认为1,第1页即为1,尾页为-1
-            'pageSize' => 10,//一页内记录数,默认为20,不分页为-1
+            'pageSize' => 15,//一页内记录数,默认为20,不分页为-1
             'pageCount' => 0,//页数
             'count' => 0,//总记录数
             'text' => '',//总记录数
@@ -16,7 +28,7 @@ class Paging extends AbstractBean {
 
     /**
      * 自动注入Bean,默认从$_REQUEST中读取数据
-     * 
+     * @param int|array $scope 见Scope类
      * @return Bean
      */
     public function build($scope = 0) {
@@ -58,6 +70,10 @@ class Paging extends AbstractBean {
         $this->setCount($count);
         return $this;
     }
+    /**
+     * 转换为可使用的分页数组
+     * @return array
+     */
     public function toPaging() {
         if($this->getPageSize() == -1) return;
         $pages = $this->toPages();
@@ -67,8 +83,11 @@ class Paging extends AbstractBean {
 
     /**
      * 返回当前页前后各 $count 的页码罗列排序后的数组
+     * @param int $count
+     * @return array
      */
-    public function toPages($count = 5) {
+    public function toPages($count = 2) {
+		global $_CFG,$_LAN;
         $page      = $this->getPage();
         $pageCount = $this->getPageCount();
         $paging    = $this->toArray();
@@ -101,21 +120,22 @@ class Paging extends AbstractBean {
             $moren = $page + $count + $count;
             array_push( $pages,array_merge( $paging,array('href'=>($moren <= $pageCount)?$moren:$pageCount,'text'=>'...') ) );
         }
-        if($page - 1 >= 1) array_unshift( $pages,array_merge( $paging,array('href'=>$page - 1,'text'=>'上一页') ) );
-        if($page + 1 <= $pageCount) array_push( $pages,array_merge( $paging,array('href'=>$page + 1,'text'=>'下一页') ) );
+        if($page - 1 >= 1) array_unshift( $pages,array_merge( $paging,array('href'=>$page - 1,'text'=>$_LAN['PREVIOUS_PAGE']) ) );
+        if($page + 1 <= $pageCount) array_push( $pages,array_merge( $paging,array('href'=>$page + 1,'text'=>$_LAN['NEXT_PAGE']) ) );
         if($page != 1) {
-            array_unshift( $pages,array_merge( $paging,array('href'=>1,'text'=>'首页') ) );
+            array_unshift( $pages,array_merge( $paging,array('href'=>1,'text'=>$_LAN['FIRST_PAGE']) ) );
         } else {
-            array_unshift( $pages,array_merge( $paging,array('href'=>1,'text'=>'首页') ) );
+            array_unshift( $pages,array_merge( $paging,array('href'=>1,'text'=>$_LAN['FIRST_PAGE']) ) );
             array_shift( $pages );
         }
         if($page != $pageCount) {
-            array_push( $pages,array_merge( $paging,array('href'=>$pageCount,'text'=>'尾页') ) );
+            array_push( $pages,array_merge( $paging,array('href'=>$pageCount,'text'=>$_LAN['LAST_PAGE']) ) );
         }
         return $pages;
     }
     /**
      * 转换为 SQL LIMIT 部分
+     * @return string
      */
     public function toLimit() {
         $pageSize = $this->getPageSize();

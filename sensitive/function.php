@@ -1,9 +1,14 @@
 <?php
+/**
+ * 一些可用函数
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
  * 返回经addslashes处理过的字符串或数组
- * @param $string 需要处理的字符串或数组
+ * @param string|array $string 需要处理的字符串或数组
  * @return mixed
  */
 function new_addslashes($string){
@@ -14,7 +19,7 @@ function new_addslashes($string){
 
 /**
  * 返回经stripslashes处理过的字符串或数组
- * @param $string 需要处理的字符串或数组
+ * @param string|array $string 需要处理的字符串或数组
  * @return mixed
  */
 function new_stripslashes($string) {
@@ -25,7 +30,7 @@ function new_stripslashes($string) {
 
 /**
  * 返回经htmlspecialchars处理过的字符串或数组
- * @param $obj 需要处理的字符串或数组
+ * @param string|array $string 需要处理的字符串或数组
  * @return mixed
  */
 function new_html_special_chars($string) {
@@ -36,7 +41,7 @@ function new_html_special_chars($string) {
 /**
  * 安全过滤函数
  *
- * @param $string
+ * @param string $string
  * @return string
  */
 function safe_replace($string) {
@@ -60,6 +65,7 @@ function safe_replace($string) {
 
 /**
  * 过滤ASCII码从0-28的控制字符
+ * @param string $str
  * @return String
  */
 function trim_unsafe_control_chars($str) {
@@ -129,7 +135,7 @@ function str_cut($string, $length, $dot = '...') {
 	if($strlen <= $length) return $string;
 	$string = str_replace(array(' ','&nbsp;', '&amp;', '&quot;', '&#039;', '&ldquo;', '&rdquo;', '&mdash;', '&lt;', '&gt;', '&middot;', '&hellip;'), array('∵',' ', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), $string);
 	$strcut = '';
-	if(strtolower(CHARSET) == 'utf-8') {
+	if(strtolower('utf-8') == 'utf-8') {
 		$length = intval($length-strlen($dot)-$length/3);
 		$n = $tn = $noc = 0;
 		while($n < strlen($string)) {
@@ -182,7 +188,7 @@ function str_cut($string, $length, $dot = '...') {
 /**
  * 获取请求ip
  *
- * @return ip地址
+ * @return string ip地址
  */
 function ip() {
 	if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
@@ -260,7 +266,7 @@ function sizecount($filesize) {
 * 字符串加密、解密函数
 *
 *
-* @param	string	$txt		字符串
+* @param	string	$string		字符串
 * @param	string	$operation	ENCODE为加密，DECODE为解密，可选参数，默认为ENCODE，
 * @param	string	$key		密钥：数字、字母、下划线
 * @param	string	$expiry		过期时间
@@ -321,6 +327,7 @@ function fileext($filename) {
  * @param $perpage 每页显示数
  * @param $urlrule URL规则
  * @param $array 需要传递的数组，用于增加额外的方法
+ * @param $setpages 分页数
  * @return 分页
  */
 function pages($num, $curr_page, $perpage = 20, $urlrule = '', $array = array(),$setpages = 10) {
@@ -572,7 +579,6 @@ function array_iconv($data, $input = 'gbk', $output = 'utf-8') {
 /**
  * 生成上传附件验证
  * @param $args   参数
- * @param $operation   操作类型(加密解密)
  */
 function upload_key($args) {
 	$pc_auth_key = md5('auth'.$_SERVER['HTTP_USER_AGENT']);
@@ -580,6 +586,9 @@ function upload_key($args) {
 	return $authkey;
 }
 
+/**
+ * 获取时间毫秒数
+ */
 function getmicrotime() {
 	list($usec, $sec) = explode(" ",microtime());
 	return ((float)$usec + (float)$sec);

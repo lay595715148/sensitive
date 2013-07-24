@@ -1,14 +1,21 @@
 <?php
+/**
+ * 转换工具类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
- * 
+ * 转换工具类
+ * @Version: 0.1.48 (build 130723)
  */
 class Transfer extends AbstractBase {
     /**
      * xml format string to php array
      * 
      * @param string $xml xml format string or xml file path string
+     * @param int $type type of $xml
      * @return array
      */
     public static function xml2PHPArray($xml,$type = 1) {
@@ -63,6 +70,7 @@ class Transfer extends AbstractBase {
     /**
      * php array to json content
      * 
+     * @param array $arr convert array
      * @return json content
      */
     public static function array2JsonContent($arr) {
@@ -71,6 +79,8 @@ class Transfer extends AbstractBase {
     /**
      * php array to php content
      * 
+     * @param array $arr convert array
+     * @param bool $encrypt if encrypt
      * @return php content
      */
     public static function array2PHPContent($arr,$encrypt = true) {
@@ -85,9 +95,12 @@ class Transfer extends AbstractBase {
 		}
         return $r;
     }
-    /*在Array和String类型之间转换，转换为字符串的数组可以直接在URL上传递*/
-    // convert a multidimensional array to url save and encoded string
-    // usage: string Array2String( array Array )
+    /**
+     * convert a multidimensional array to url save and encoded string
+     * 
+     * 在Array和String类型之间转换，转换为字符串的数组可以直接在URL上传递
+     * @param array $Array convert array
+     */
     public static function Array2String($Array) {
         $Return='';
         $NullValue="^^^";
@@ -100,8 +113,10 @@ class Transfer extends AbstractBase {
         }
         return urlencode(substr($Return,0,-2));
     }
-    // convert a string generated with Array2String() back to the original (multidimensional) array
-    // usage: array String2Array ( string String)
+    /**
+     * convert a string generated with Array2String() back to the original (multidimensional) array
+     * @param string $String convert string
+     */
     public static function String2Array($String) {
         $Return=array();
         $String=urldecode($String);
@@ -124,9 +139,11 @@ class Transfer extends AbstractBase {
     /**
      * array $a to string $r
      * 
+     * @param string $r output string pointer address
+     * @param array $a input array pointer address
      * @return void
      */
-    private static function a2s(&$r,array &$a) {
+    public static function a2s(&$r,array &$a) {
         $f = false;
         $i=0;
         $r.= 'array('."\n";
@@ -141,6 +158,16 @@ class Transfer extends AbstractBase {
         }
         $r.=')'."\n";
     }
+    /**
+     * to string $r
+     * 
+     * @param string $r output string pointer address
+     * @param string $k
+     * @param string $v
+     * @param string $i
+     * @param string $j
+     * @return void
+     */
     private static function o2s(&$r,$k,$v,$i,$j) {
         if($k!==$i) {
             if($j)

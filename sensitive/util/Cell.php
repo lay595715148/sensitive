@@ -1,6 +1,15 @@
 <?php
+/**
+ * SQL条件元素工具类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * SQL条件元素工具类
+ * @Version: 0.1.48 (build 130723)
+ */
 class Cell extends AbstractBean {
     const MODEL_EQUAL = 0;
     const MODEL_UNEQUAL = 1;
@@ -22,6 +31,13 @@ class Cell extends AbstractBean {
     const FLAG_EXPLODE = ',';
     const TYPE_STRING = 0;
     const TYPE_NUMBER = 1;
+    /**
+     * 构造方法
+     * @param string $name 元素名
+     * @param string $value 元素值
+     * @param string $mode 元素模型
+     * @param string $type 元素值类型
+     */
     public function __construct($name = false, $value = false, $mode = false, $type = false) {
         $this->properties = array(
             'name' => ($name === false || !is_string($name))?'name':$name,
@@ -32,7 +48,7 @@ class Cell extends AbstractBean {
     }
     /**
      * parse cells from filter string
-     * @param $filter string
+     * @param string $filter filter string
      */
     public static function parseFilterString($filter = '') {
         $result = false;
@@ -91,7 +107,10 @@ class Cell extends AbstractBean {
         }
         return $result;
     }
-    // wait
+    /**
+     * waiting
+     * @param string $sql SQL string
+     */
     public static function parseSQLString($sql = '') {
         $cell = false;
         if($sql && is_string($sql)) {

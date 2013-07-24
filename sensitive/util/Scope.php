@@ -1,6 +1,15 @@
 <?php
+/**
+ * 变量域工具类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * 变量域工具类
+ * @Version: 0.1.48 (build 130723)
+ */
 class Scope extends AbstractBase {
     const SCOPE_REQUEST = 0;
     const SCOPE_GET = 1;
@@ -11,7 +20,7 @@ class Scope extends AbstractBase {
     /**
      * 将scope标记量转换为变量
      * 
-     * @param int $scope
+     * @param int|array $scope
      * @return mixed
      */
     public static function parseScope($scope) {

@@ -1,13 +1,34 @@
 <?php
+/**
+ * mysql数据库访问类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * mysql数据库访问类
+ * @author liaiyong
+ */
 final class Mysql extends AbstractStore implements Interface_DBPerform {
+	/**
+	 * @var mixed mysql数据库连接
+	 */
     private $link;
+	/**
+	 * @var mixed mysql数据库操作结果
+	 */
     private $result;
+	/**
+	 * 初始化
+	 */
     public function init() {
         $this->open();
         return $this;
     }
+	/**
+	 * 打开mysql数据库连接
+	 */
     public function open() {
         $config = &$this->config;
         $link   = &$this->link;
@@ -25,13 +46,21 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
             throw new MysqlException('Cannot connect to mysql server:'.$host.'!');
         }
 	}
-    /**
-     * @return boolean
-     */
+	/**
+	 * 关闭mysql数据库连接
+	 * @return bool
+	 */
     public function close() {
         $link = &$this->link;
         return @mysql_close($link);
     }
+    /**
+     * mysql执行sql语句
+     * @param string $sql
+     * @param string $encoding
+     * @param bool $showSQL
+     * @return mixed
+     */
     public function query($sql, $encoding = '', $showSQL = false) {
         $config = &$this->config;
         $result = &$this->result;
@@ -56,6 +85,15 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
 
         return $result;
     }
+    /**
+     * mysql执行insert语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string $values 表字段对应值数组
+     * @param bool $replace
+     * @param bool $returnid
+     * @return int|bool
+     */
     public function insert($table, $fields = '', $values = '', $replace = false, $returnid = true) {
         $result = &$this->result;
         $link   = &$this->link;
@@ -66,6 +104,12 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
 
         return ($returnid)?mysql_insert_id($link):$result;
     }
+    /**
+     * mysql执行delete语句
+     * @param string $table 表名
+     * @param array|string|Condition $condition 条件
+     * @return bool
+     */
     public function delete($table, $condition = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -76,6 +120,14 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
 
         return $result;
     }
+    /**
+     * mysql执行update语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string $values 表字段对应值数组
+     * @param array|string|Condition $condition 条件
+     * @return bool
+     */
     public function update($table, $fields = '', $values = '', $condition = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -86,6 +138,16 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
 
         return $result;
     }
+    /**
+     * mysql执行select语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string|Condition $condition 条件
+     * @param array|string $group 
+     * @param array|string|Arrange $order
+     * @param string $limit 
+     * @return mixed
+     */
     public function select($table, $fields = '', $condition = '', $group = '', $order = '', $limit = '') {//$group is not useful
         $result = &$this->result;
         $link   = &$this->link;
@@ -96,7 +158,13 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
 
         return $result;
     }
-    /* count */
+    /**
+     * mysql执行记数语句
+     * @param string $table 表名
+     * @param array|string|Condition $condition 条件
+     * @param array|string $group 
+     * @return bool
+     */
     public function count($table, $condition = '', $group = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -107,6 +175,14 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         
 		return $result;
 	}
+    /**
+     * 转换为insert语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string $values 表字段对应值数组
+     * @param bool $replace
+     * @return string
+     */
     public function insertSQL($table, $fields = '', $values = '', $replace = false) {
         $result = &$this->result;
         $link   = &$this->link;
@@ -126,6 +202,12 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         $sql    = (($replace)?'REPLACE':'INSERT')." INTO $table ( $fields ) VALUES ( $values )";
         return $sql;
 	}
+    /**
+     * 转换为delete语句
+     * @param string $table 表名
+     * @param array|string|Condition $condition 条件
+     * @return string
+     */
     public function deleteSQL($table, $condition = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -142,6 +224,14 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         $sql    = "DELETE FROM $table $condition";
         return $sql;
 	}
+    /**
+     * 转换为update语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string $values 表字段对应值数组
+     * @param array|string|Condition $condition 条件
+     * @return string
+     */
     public function updateSQL($table, $fields = '', $values = '', $condition = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -165,6 +255,16 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         $sql    = "UPDATE $table SET $values $condition";
         return $sql;
 	}
+    /**
+     * 转换为select语句
+     * @param string $table 表名
+     * @param array|string $fields 表字段数组
+     * @param array|string|Condition $condition 条件
+     * @param array|string $group 
+     * @param array|string|Arrange $order
+     * @param string $limit 
+     * @return string
+     */
 	public function selectSQL($table, $fields = '', $condition = '', $group = '', $order = '', $limit = '') {//$group is not useful
         if(!is_string($table) || !$table) { return false; }
 
@@ -201,6 +301,13 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         $sql    = "SELECT $fields FROM $table $condition $group $order $limit";
         return $sql;
 	}
+    /**
+     * 转换为记数语句
+     * @param string $table 表名
+     * @param array|string|Condition $condition 条件
+     * @param array|string $group 
+     * @return string
+     */
 	public function countSQL($table, $condition = '', $group = '') {
         $result = &$this->result;
         $link   = &$this->link;
@@ -220,6 +327,12 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         $sql    = "SELECT count(*) as count FROM $table $condition $group";
         return $sql;
 	}
+	/**
+	 * 将结果集转换为指定数量的数组
+	 * @param int $count
+	 * @param mixed $result
+	 * @return array
+	 */
     public function toArray($count = 0, $result = '') {
         $rows = array();
         $result = ($result)?$result:$this->result;
@@ -251,9 +364,19 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         
         return $rows;
     }
+	/**
+	 * 获取结果集
+	 * @return mixed
+	 */
     public function toResult() {
         return $this->result;
     }
+	/**
+	 * 获取结果集中的行数或执行影响的行数
+	 * @param mixed $result
+	 * @param bool $isselect
+	 * @return mixed
+	 */
     public function toCount($result = '', $isselect = true) {
         if(!$result) { $result = &$this->result; }
         if($isselect) {
@@ -473,8 +596,12 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         return ($str)?"WHERE $str":"WHERE 0";
     }
     /**
+     * convert array to ORDER SQL clause
      * array('my_field'=>'DESC','your_field'=>'ASC')
      * array('my_field'=>1,'your_field'=>0)
+     * @param array $arr
+     * @param string $table
+     * @return string
      */
     private function array2Order($arr, $table) {
         global $_CFG;
@@ -506,7 +633,7 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
         return ($str)?"ORDER BY $str":"";
     }
     /**
-     * analyze an instance of Arrange to order sql part
+     * analyze an instance of Arrange to order sql clause
      * @param Arrange $obj
      * @param string $table
      * @return string
@@ -539,5 +666,9 @@ final class Mysql extends AbstractStore implements Interface_DBPerform {
     }
 }
 
+/**
+ * mysql操作异常
+ * @author liaiyong
+ */
 class MysqlException extends Exception {}
 ?>

@@ -1,15 +1,50 @@
 <?php
+/**
+ * 核心基础控制器
+ * @see https://github.com/lay595715148/sensitive
+ * 
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * <p>基础控制器</p>
+ * <p>核心类，继承至此类的对象将会在运行时自动执行初始化init方法</p>
+ * 
+ * @abstract
+ */
 abstract class AbstractAction extends AbstractBase {
+    /**
+     * @var array 配置信息数组
+     */
     protected $config = array();
+    /**
+     * @var array 存放配置的AbstractService对象
+     */
     protected $services = array();
+    /**
+     * @var array 存放自注入的AbstractBean对象
+     */
     protected $beans = array();
+    /**
+     * @var AbstractTemplate 模板引擎对象
+     */
     protected $template;
+    /**
+     * @var array 访问路径信息数据
+     */
     protected $pathinfo = array();
+	/**
+	 * 构造方法
+	 * @param array $config
+	 */
     public function __construct($config = '') {
         $this->config = $config;
     }
+	/**
+	 * 初始化
+	 */
     public function init() {//must return $this
         $this->pathinfo = pathinfo($_SERVER['PHP_SELF']);
         
@@ -45,8 +80,15 @@ abstract class AbstractAction extends AbstractBase {
 
         return $this;
     }
+	/**
+	 * 默认执行方法
+	 */
     public function launch() {
     }
+    /**
+     * 路由执行方法
+     * @param Exception $e 异常对象,默认为空
+     */
     public function dispatch($e = null) {//must return $this
         global $_CFG;
 
@@ -76,6 +118,9 @@ abstract class AbstractAction extends AbstractBase {
         
         return $this;
     }
+	/**
+	 * 最后执行方法
+	 */
     public function tail() {//must return $this
         $ext = &$this->pathinfo;
         $extension = array_key_exists('extension',$ext)?$ext['extension']:'';

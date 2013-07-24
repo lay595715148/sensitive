@@ -1,9 +1,27 @@
 <?php
+/**
+ * 安全加密保护工具类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
+if(!defined('INIT_SENSITIVE')) { exit; }
+
+/**
+ * 安全加密保护工具类
+ * @author liaiyong
+ */
 class Security extends AbstractBase {
+	/**
+	 * @var string encrypt key
+	 * @static
+	 */
     private static $key = 'MsuY7U0iF=s=';
 	/**
+	 * encrypt
 	 * @param $txt 要加密字符串
 	 * @param $key 密钥
+	 * @static
+	 * @return string
 	 */
     public static function encrypt($txt,$key = '') {
 		if(!$key) {
@@ -42,8 +60,11 @@ class Security extends AbstractBase {
     }
 
     /**
+     * decrypt
 	 * @param $txt 要解密字符串
 	 * @param $key 密钥
+	 * @static
+	 * @return string
 	 */
     public static function decrypt($txt,$key = '') {
     	if(!$key) {
@@ -85,20 +106,23 @@ class Security extends AbstractBase {
     
 	/**
      * ldap中md5方式加密字符串
-	 * @param $txt 要加密字符串
-	 * @param $sign 是否添加前缀
+	 * @param string $txt 要加密字符串
+	 * @param bool $sign 是否添加前缀
+     * @return string
 	 */
     public static function ldapmd5($txt,$sign = true) {
         return (($sign)?'{md5}':''). base64_encode(pack( 'H*',md5($txt)));
     }
     /**
      * 随机生成一段字符串
+     * @return string
      */
     public static function random() {
         return base64_encode(pack('N6', mt_rand(), mt_rand(), mt_rand(), mt_rand(), mt_rand(), uniqid()));
     }
     /**
      * 随机生成一段md5加密字符串
+     * @return string
      */
     public static function randommd5() {
         return md5(base64_encode(pack('N6', mt_rand(), mt_rand(), mt_rand(), mt_rand(), mt_rand(), uniqid())));

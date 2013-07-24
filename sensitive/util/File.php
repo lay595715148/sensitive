@@ -1,23 +1,27 @@
 <?php
+/**
+ * 文件处理相关工具类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
- * 
+ * 文件处理相关工具类
  * @author liaiyong
- *
  */
 class File extends AbstractBase {
 	/**
 	 * file write
 	 * @param string $content
 	 * @param string $dir
-	 * @param string $basename
+	 * @param string $name
 	 * @param string $mask
 	 * @return boolean
 	 */
-    public static function write($content,$dir,$basename,$mask = '') {
+    public static function write($content,$dir,$name,$mask = '') {
         if(file_exists($dir)) {
-            $filename = $basename.$mask;
+            $filename = $name.$mask;
             $handle   = fopen($dir.'/'.$filename,'w');
             $result   = fwrite($handle,$content);
             $return   = fflush($handle);
@@ -29,10 +33,14 @@ class File extends AbstractBase {
     }
     /**
      * file read
-     * @param string $file
+     * @param string $name
+     * @param string $dir
+     * @param string $mask
+     * @return string
      */
-    public static function read($file) {
+    public static function read($name,$dir,$mask = '') {
         $content = false;
+        $file = $dir.'/'.$name.$mask;
         if(file_exists($file)) {
             $handle   = fopen($file,'r');
             $content  = fread($handle, filesize($file));

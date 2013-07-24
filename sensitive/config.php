@@ -1,4 +1,9 @@
 <?php
+/**
+ * 一些配置信息
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 global $_CFG,$_LAN;

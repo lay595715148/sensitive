@@ -1,11 +1,18 @@
 <?php
+/**
+ * 基础数据模型
+ * @see https://github.com/lay595715148/sensitive
+ * 
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
+ * <p>基础数据模型</p>
+ * <p>核心类，继承至此类的对象将会拥有setter和getter方法和build方法</p>
  * 
- * @author liaiyong
  * @abstract
- *
  */
 abstract class AbstractBean extends AbstractBase {
     /**
@@ -18,19 +25,27 @@ abstract class AbstractBean extends AbstractBase {
      * please don't modify in all methods except for '__construct','__set','__get' and so on.
      */
     protected $aliases = array();
-    public function __construct($properties = '') {
+    /**
+     * 构造方法
+     * @param array $properties
+     */
+    public function __construct($properties = array()) {
         if(is_array($properties)) {
             $this->properties = $properties;
         }
     }
     /**
      * isset property
+     * @param string $name
+     * @return bool
      */
     public function __isset($name) {
         return isset($this->properties[$name]);
     }
     /**
      * unset property
+     * @param string $name
+     * @return void
      */
     public function __unset($name) {
         unset($this->properties[$name]);
@@ -38,7 +53,7 @@ abstract class AbstractBean extends AbstractBase {
     /**
      * magic setter,set value to class property
      * 
-     * @see Base::__set()
+     * @see AbstractBase::__set()
      * @param string $name
      * @param mixed $value
      * @return void
@@ -64,7 +79,7 @@ abstract class AbstractBean extends AbstractBase {
     /**
      * magic setter,get value of class property
      * 
-     * @see Base::__get()
+     * @see AbstractBase::__get()
      * @param string $name
      * @return mixed|void
      */
@@ -89,7 +104,7 @@ abstract class AbstractBean extends AbstractBase {
     /**
      * magic call method,auto call setter or getter
      * 
-     * @see Base::__call()
+     * @see AbstractBase::__call()
      * @param string $method
      * @param array $arguments
      * @return mixed|void
@@ -138,5 +153,10 @@ abstract class AbstractBean extends AbstractBase {
     }
 }
 
+/**
+ * Bean Scope Exception
+ * @author liaiyong
+ * @abstract
+ */
 class BeanScopeException extends Exception {}
 ?>

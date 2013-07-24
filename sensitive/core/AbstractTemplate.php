@@ -1,18 +1,67 @@
 <?php
+/**
+ * 模板引擎基础类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
+/**
+ * 模板引擎基础类
+ * @abstract
+ * @version 0.1.48 (bulid 130723)
+ */
 abstract class AbstractTemplate extends AbstractBase {
+    /**
+     * 配置信息数组
+     * @var array $config
+     */
     protected $config = array();
+    /**
+     * 输出变量内容数组
+     * @var array $vars
+     */
     protected $vars = array();
+    /**
+     * HTTP headers
+     * @var array $config
+     */
     protected $headers = array();
+    /**
+     * HTML metas
+     * @var array $config
+     */
     protected $metas = array();
+    /**
+     * HTML scripts
+     * @var array $config
+     */
     protected $jses = array();
+    /**
+     * HTML scripts in the end
+     * @var array $config
+     */
     protected $javascript = array();
+    /**
+     * HTML css links
+     * @var array $config
+     */
     protected $csses = array();
+    /**
+     * file path
+     * @var array $config
+     */
     protected $file;
+    /**
+     * 构造方法
+     * @param array $config 配置信息数组
+     */
     public function __construct($config = '') {
         $this->config = $config;
     }
+    /**
+     * 初始化
+     */
     public function init() {//must return $this
         global $_CFG,$_SRCPath;
         $lang = &$_CFG['language'];
@@ -23,12 +72,20 @@ abstract class AbstractTemplate extends AbstractBase {
         
         return $this;
     }
-    //push header for output
+    /**
+     * push header for output
+     * @param string $header http header string
+     */
     public function header($header) {
         $headers   = &$this->headers;
         $headers[] = $header;
     }
-    //set title ,if $append equal false, then reset title;if $append equal 1 or true,then append end position; other append start position
+    /**
+     * set title ,if $append equal false, then reset title;if $append equal 1 or true,
+     * then append end position; other append start position
+     * @param string $str title
+     * @param boolean $append if append
+     */
     public function title($str, $append = false) {
         $vars  = &$this->vars;
 		$title = isset($vars['title'])?$vars['title']:false;
@@ -40,16 +97,26 @@ abstract class AbstractTemplate extends AbstractBase {
 			$vars['title'] = $str.$title;
 		}
 	}
-    //push variables with a name
+    /**
+     * push variables with a name
+     * @param string $name name of variable
+     * @param mixed $value value of variable
+     */
     public function push($name, $value) {
         $vars        = &$this->vars;
         $vars[$name] = $value;
     }
-    //set include file path
+    /**
+     * set include file path
+     * @param string $filepath file path
+     */
     public function file($filepath) {
         $this->file = $filepath;
     }
-    //set include theme template file path
+    /**
+     * set include theme template file path
+     * @param string $filepath template file path
+     */
     public function template($filepath) {
         global $_CFG,$_SRCPath;
         $theme = &$_CFG['theme']['theme-use'];
@@ -60,7 +127,10 @@ abstract class AbstractTemplate extends AbstractBase {
             $this->file = $filepath;
         }
     }
-    //set meta infomation
+    /**
+     * set meta infomation
+     * @param array $meta array for html meta tag
+     */
     public function meta($meta) {
         $metas = &$this->metas;
         if(is_array($meta)) {
@@ -71,7 +141,10 @@ abstract class AbstractTemplate extends AbstractBase {
             $metas[] = $meta;
         }
     }
-    //set include js path
+    /**
+     * set include js path
+     * @param string $js javascript file src path in html tag script
+     */
     public function js($js) {
         $jses   = &$this->jses;
         if(is_array($js)) {
@@ -82,7 +155,10 @@ abstract class AbstractTemplate extends AbstractBase {
             $jses[] = $js;
         }
     }
-    //set include js path
+    /**
+     * set include js path,those will echo in end of document
+     * @param string $js javascript file src path in html tag script
+     */
     public function javascript($js) {
         $javascript   = &$this->javascript;
         if(is_array($js)) {
@@ -93,7 +169,10 @@ abstract class AbstractTemplate extends AbstractBase {
             $javascript[] = $js;
         }
     }
-    //set include css path
+    /**
+     * set include css path
+     * @param string $css css file link path
+     */
     public function css($css) {
         $csses   = &$this->csses;
         if(is_array($css)) {
@@ -104,25 +183,33 @@ abstract class AbstractTemplate extends AbstractBase {
             $csses[] = $css;
         }
     }
-    //output json
+    /**
+     * output as json
+     */
     public function json() {
         $headers      = &$this->headers;
         $templateVars = &$this->vars;
+		$templateVars = array_diff_key($templateVars,array('title'=>1));
         foreach($headers as $header) {
             header($header);
         }
         echo json_encode($templateVars);
     }
-    //output xml
+    /**
+     * output as xml
+     */
     public function xml() {
         $headers      = &$this->headers;
         $templateVars = &$this->vars;
+		$templateVars = array_diff_key($templateVars,array('title'=>1));
         foreach($headers as $header) {
             header($header);
         }
         echo Parser::array2XML($templateVars);
     }
-    //output template
+    /**
+     * output as template
+     */
     public function out() {
         global $_SRCPath,$_CFG,$_LAN;
         $templateVars = &$this->vars;

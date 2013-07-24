@@ -1,27 +1,59 @@
 <?php
+/**
+ * SQL条件部分子句组成结构对象类
+ * @author liaiyong<595715148@qq.com>
+ * @Version: 0.1.48 (build 130723)
+ */
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
- * SQL where clause
+ * SQL条件部分子句组成结构对象类
+ * @author liaiyong
  */
 class Condition extends AbstractBase {
+	/**
+	 * @var int 当前存放Cell对象的起始序号
+	 */
     private $index = 0;
+	/**
+	 * @var array<Cell> 存放Cell对象的数组
+	 */
     private $conds = array();
+	/**
+	 * @var int|bool 元素间连接是否使用OR(默认AND),或使用OR的起始位置
+	 */
     private $orpos = false;
+    /**
+     * 构造方法
+     */
     public function __construct() {
     }
+    /**
+     * 获取已经存放的Cell对象数组
+     * @return array
+     */
     public function getConds() {
         return $this->conds;
     }
+    /**
+     * 设置元素间连接是否使用OR(默认AND),或使用OR的起始位置
+     * @param int $orpos
+     * @return void
+     */
     public function setOrpos($orpos) {
         $this->orpos = 0 + $orpos;
     }
+    /**
+     * 获取元素间连接是否使用OR(默认AND),或使用OR的起始位置
+     * @return int|bool
+     */
     public function getOrpos() {
         return $this->orpos;
     }
     /**
-     * @param Cell|array<Cell> $cell 
-     * @return int the index of cell or the first index of cells's first or false
+     * 将单个Cell对象或Cell对象数组存放进$conds数组中
+     * @param Cell|array<Cell> $cell 单个Cell对象或Cell对象数组
+     * @return int|bool the index of Cell array before put into
      */
     public function putCell($cell) {
         $conds  = &$this->conds;
@@ -43,7 +75,9 @@ class Condition extends AbstractBase {
         return $return;
     }
     /**
+     * 将$conds数组中指定索引位的Cell对象移除
      * @param $index int the index of cell
+     * @return bool
      */
     public function removeCell($index) {
         $conds = &$this->conds;
@@ -59,7 +93,7 @@ class Condition extends AbstractBase {
      * 
      * contact all the cell to SQL string
      * use 'OR' from index $orpos,if $orpos = true or 0 all the cell will contact with 'OR'
-     * 
+     * @return string SQL clause string
      */
     public function toSQLString() {
         $orpos = &$this->orpos;
