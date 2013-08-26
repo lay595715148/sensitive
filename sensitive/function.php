@@ -7,6 +7,20 @@
 if(!defined('INIT_SENSITIVE')) { exit; }
 
 /**
+ * 将名称转换为Java的编程风格
+ *
+ * 首字母小写，其余单词的首字母大写<br/>
+ * load_xml_config --> loadXmlConfig
+ * 
+ * @param string $name 名称
+ * @return string
+ */
+function name_to_java($name) {
+    $name = preg_replace("/_([a-zA-Z])/e", "strtoupper('\\1')", $name);
+    return $name;
+}
+
+/**
  * 返回经addslashes处理过的字符串或数组
  * @param string|array $string 需要处理的字符串或数组
  * @return mixed
